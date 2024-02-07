@@ -1,0 +1,13 @@
+{
+    "name": "node-red-project",
+    "description": "A Node-RED Project",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "@flowfuse/node-red-dashboard": "~1.0.2",
+        "node-red-contrib-opcua": "~0.2.321",
+        "node-red-contrib-postgresql": "~0.14.0",
+        "node-red-contrib-re-postgres": "~0.3.4",
+        "node-red-contrib-ui_j": "~1.2.19"
+    }
+}

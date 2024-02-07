@@ -1,0 +1,748 @@
+[
+    {
+        "id": "4e7e12c07ca7c4f9",
+        "type": "tab",
+        "label": "Client",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "9ce7af8b8798dd30",
+        "type": "tab",
+        "label": "Writer",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "70a1e0ab1144cc06",
+        "type": "tab",
+        "label": "server",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "ef0a1b42cde475be",
+        "type": "OpcUa-Endpoint",
+        "endpoint": "opc.tcp://opc-micro:50000",
+        "secpol": "None",
+        "secmode": "None",
+        "none": false,
+        "login": false,
+        "usercert": false,
+        "usercertificate": "",
+        "userprivatekey": ""
+    },
+    {
+        "id": "0a42f122efecbf4e",
+        "type": "mqtt-broker",
+        "name": "mqtt-server",
+        "broker": "mqtt",
+        "port": "1883",
+        "clientid": "boiler-client",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "38eba8fb552d6592",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt",
+        "port": "1883",
+        "clientid": "boiler-writer",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "d3f0927a105105cf",
+        "type": "ui-group",
+        "name": "Boiler",
+        "page": "f989edf84a666335",
+        "width": "6",
+        "height": "1",
+        "order": -1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "ed111dbbab6f6610",
+        "type": "ui-base",
+        "name": "UI Name",
+        "path": "/dashboard",
+        "includeClientData": true,
+        "acceptsClientConfig": [
+            "ui-notification",
+            "ui-control"
+        ],
+        "showPathInSidebar": false
+    },
+    {
+        "id": "a383aa01253039ae",
+        "type": "ui-theme",
+        "name": "Theme Name",
+        "colors": {
+            "surface": "#ffffff",
+            "primary": "#0094ce",
+            "bgPage": "#eeeeee",
+            "groupBg": "#ffffff",
+            "groupOutline": "#cccccc"
+        },
+        "sizes": {
+            "pagePadding": "12px",
+            "groupGap": "12px",
+            "groupBorderRadius": "4px",
+            "widgetGap": "12px"
+        }
+    },
+    {
+        "id": "02b6cf51aeb3d186",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": "1"
+    },
+    {
+        "id": "f0b0bf9836bb91ed",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": "1"
+    },
+    {
+        "id": "f989edf84a666335",
+        "type": "ui-page",
+        "name": "boiler",
+        "ui": "ed111dbbab6f6610",
+        "path": "/page1",
+        "icon": "home",
+        "layout": "grid",
+        "theme": "a383aa01253039ae",
+        "order": -1,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "1c87d60af1cce389",
+        "type": "postgreSQLConfig",
+        "name": "",
+        "host": "timescaledb",
+        "hostFieldType": "str",
+        "port": "5432",
+        "portFieldType": "num",
+        "database": "postgres",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "applicationName": "",
+        "applicationNameType": "str",
+        "max": "10",
+        "maxFieldType": "num",
+        "idle": "1000",
+        "idleFieldType": "num",
+        "connectionTimeout": "10000",
+        "connectionTimeoutFieldType": "num",
+        "user": "postgres",
+        "userFieldType": "str",
+        "password": "p4ssw0rd",
+        "passwordFieldType": "str"
+    },
+    {
+        "id": "6301ae3ad5f3f42b",
+        "type": "postgresdb",
+        "cfgname": "timescale",
+        "hostname": "timescaledb",
+        "port": "5432",
+        "db": "in4pl",
+        "ssl": false
+    },
+    {
+        "id": "1bb3b998da0f4fab",
+        "type": "OpcUa-Item",
+        "z": "4e7e12c07ca7c4f9",
+        "item": "ns=4;i=15013",
+        "datatype": "Extension Object",
+        "value": "",
+        "name": "boilerOPCNode",
+        "x": 220,
+        "y": 200,
+        "wires": [
+            [
+                "3ac777ab1cec1151"
+            ]
+        ]
+    },
+    {
+        "id": "3ac777ab1cec1151",
+        "type": "OpcUa-Client",
+        "z": "4e7e12c07ca7c4f9",
+        "endpoint": "ef0a1b42cde475be",
+        "action": "subscribe",
+        "deadbandtype": "a",
+        "deadbandvalue": 1,
+        "time": "5",
+        "timeUnit": "s",
+        "certificate": "n",
+        "localfile": "",
+        "localkeyfile": "",
+        "securitymode": "None",
+        "securitypolicy": "None",
+        "useTransport": false,
+        "maxChunkCount": "",
+        "maxMessageSize": "",
+        "receiveBufferSize": "",
+        "sendBufferSize": "",
+        "name": "OPCUA_Server",
+        "x": 420,
+        "y": 180,
+        "wires": [
+            [
+                "3a1144546c024def"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "844a9e4b3c61742a",
+        "type": "inject",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "Initializer",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 160,
+        "y": 60,
+        "wires": [
+            [
+                "1bb3b998da0f4fab",
+                "119a6455c70a7e85"
+            ]
+        ]
+    },
+    {
+        "id": "3a1144546c024def",
+        "type": "function",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "AddSourceTimestampToPayload",
+        "func": "msg.payload = JSON.parse(JSON.stringify(msg.payload))\nif (!msg.payload.pressure) {\n    // heater is off\n    msg.payload = {}\n    msg.payload.data = {}\n    msg.payload.data.temperature = {}\n    msg.payload.data.temperature.top = -1,\n    msg.payload.data.temperature.bottom = -1\n    msg.payload.data.pressure = -1\n    msg.payload.data.heaterState = 0\n}\nelse \n{\n    var newPayload = {}\n    newPayload = msg.payload\n    msg.payload = {}\n    msg.payload.data = newPayload\n}\nvar TIME_OFFSET = 0\nvar serverTime = msg.serverTimestamp\nserverTime.setHours( serverTime.getHours() +  TIME_OFFSET);\nmsg.payload.time = serverTime.toISOString()\nmsg.payload.id = \"boiler01\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 510,
+        "y": 360,
+        "wires": [
+            [
+                "0e703de62243675c",
+                "060191ce539d2524",
+                "5e76381e1bf95ea4",
+                "82c8a665acc83592"
+            ]
+        ]
+    },
+    {
+        "id": "0e703de62243675c",
+        "type": "debug",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "82c8a665acc83592",
+        "type": "mqtt out",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "mqtt-server",
+        "topic": "boiler",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0a42f122efecbf4e",
+        "x": 1270,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "119a6455c70a7e85",
+        "type": "debug",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "ce8f73032e6af47e",
+        "type": "debug",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "060191ce539d2524",
+        "type": "change",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.data.temperature.top",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "TOP",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 220,
+        "wires": [
+            [
+                "ce8f73032e6af47e",
+                "200c6ad20d6d90a1",
+                "ac1e6da2eb19c6a0"
+            ]
+        ]
+    },
+    {
+        "id": "200c6ad20d6d90a1",
+        "type": "ui-text",
+        "z": "4e7e12c07ca7c4f9",
+        "group": "d3f0927a105105cf",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "temp top",
+        "label": "Temp Top",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1080,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "ac1e6da2eb19c6a0",
+        "type": "ui-chart",
+        "z": "4e7e12c07ca7c4f9",
+        "group": "d3f0927a105105cf",
+        "name": "",
+        "label": "chart",
+        "order": 9007199254740991,
+        "chartType": "line",
+        "category": "topic",
+        "categoryType": "msg",
+        "xAxisProperty": "",
+        "xAxisPropertyType": "msg",
+        "xAxisType": "time",
+        "yAxisProperty": "",
+        "ymin": "",
+        "ymax": "",
+        "action": "append",
+        "pointShape": "circle",
+        "pointRadius": 4,
+        "showLegend": true,
+        "removeOlder": 1,
+        "removeOlderUnit": "3600",
+        "removeOlderPoints": "",
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "width": 6,
+        "height": 8,
+        "className": "",
+        "x": 1110,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "21ecf69c9c4b2912",
+        "type": "ui-text",
+        "z": "4e7e12c07ca7c4f9",
+        "group": "d3f0927a105105cf",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "temp down",
+        "label": "Temp Down",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#717171",
+        "className": "",
+        "x": 1010,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "5e76381e1bf95ea4",
+        "type": "change",
+        "z": "4e7e12c07ca7c4f9",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.data.temperature.bottom",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "BOTTOM",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 820,
+        "y": 140,
+        "wires": [
+            [
+                "21ecf69c9c4b2912",
+                "ac1e6da2eb19c6a0"
+            ]
+        ]
+    },
+    {
+        "id": "31abe50555aa6850",
+        "type": "debug",
+        "z": "9ce7af8b8798dd30",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "51d3b1233c41c3b3",
+        "type": "template",
+        "z": "9ce7af8b8798dd30",
+        "name": "template",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "INSERT INTO public.boiler(\"time\", top, bottom, pressure, \"heaterState\",\"boilerId\") VALUES ('{{payload.time}}', {{payload.data.temperature.top}}, {{payload.data.temperature.bottom}}, {{payload.data.pressure}}, {{payload.data.heaterState}},'{{payload.id}}')",
+        "output": "str",
+        "x": 320,
+        "y": 420,
+        "wires": [
+            [
+                "31abe50555aa6850",
+                "b440f2d739426698"
+            ]
+        ]
+    },
+    {
+        "id": "1e7c1a9d5ccda7a8",
+        "type": "mqtt in",
+        "z": "9ce7af8b8798dd30",
+        "name": "",
+        "topic": "boiler",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "38eba8fb552d6592",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 480,
+        "wires": [
+            [
+                "feeb365b324f4d7a"
+            ]
+        ]
+    },
+    {
+        "id": "af26a7089abd2332",
+        "type": "debug",
+        "z": "9ce7af8b8798dd30",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "feeb365b324f4d7a",
+        "type": "json",
+        "z": "9ce7af8b8798dd30",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 310,
+        "y": 480,
+        "wires": [
+            [
+                "51d3b1233c41c3b3",
+                "af26a7089abd2332"
+            ]
+        ]
+    },
+    {
+        "id": "473d7508c953e94c",
+        "type": "debug",
+        "z": "9ce7af8b8798dd30",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "b440f2d739426698",
+        "type": "postgres",
+        "z": "9ce7af8b8798dd30",
+        "postgresdb": "6301ae3ad5f3f42b",
+        "name": "",
+        "output": false,
+        "perrow": false,
+        "rowspermsg": "1",
+        "return_on_error": false,
+        "limit_queries": "0",
+        "limit_by": "payload",
+        "limit_value": "1",
+        "limit_drop_intermediate": false,
+        "limit_drop_if_in_queue": false,
+        "outputs": false,
+        "x": 620,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "6020a047bdd55a7d",
+        "type": "function",
+        "z": "70a1e0ab1144cc06",
+        "name": "function 1",
+        "func": "flow.set('isoOutput2', Math.random() + 2.0)\nflow.set('isoOutput3', Math.random() + 3.0)\nflow.set('isoOutput4', Math.random() + 4.0)\nflow.set('isoOutput5', Math.random() + 5.0)\nflow.set('isoOutput6', Math.random() + 6.0)\nflow.set('isoOutput7', Math.random() + 7.0)\nflow.set('isoOutput8', Math.random() + 8.0)\nmsg.payload = flow.get('isoOutput8')\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "48038e91788f004a",
+        "type": "inject",
+        "z": "70a1e0ab1144cc06",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 80,
+        "wires": [
+            [
+                "6020a047bdd55a7d",
+                "10f437c08ca9fe3c"
+            ]
+        ]
+    },
+    {
+        "id": "10f437c08ca9fe3c",
+        "type": "OpcUa-Server",
+        "z": "70a1e0ab1144cc06",
+        "port": "53880",
+        "name": "aaa",
+        "endpoint": "",
+        "users": "users.json",
+        "nodesetDir": "",
+        "autoAcceptUnknownCertificate": true,
+        "registerToDiscovery": false,
+        "constructDefaultAddressSpace": true,
+        "allowAnonymous": true,
+        "endpointNone": true,
+        "endpointSign": true,
+        "endpointSignEncrypt": true,
+        "endpointBasic128Rsa15": true,
+        "endpointBasic256": true,
+        "endpointBasic256Sha256": true,
+        "maxNodesPerBrowse": 0,
+        "maxNodesPerHistoryReadData": 0,
+        "maxNodesPerHistoryReadEvents": 0,
+        "maxNodesPerHistoryUpdateData": 0,
+        "maxNodesPerRead": 0,
+        "maxNodesPerWrite": 0,
+        "maxNodesPerMethodCall": 0,
+        "maxNodesPerRegisterNodes": 0,
+        "maxNodesPerNodeManagement": 0,
+        "maxMonitoredItemsPerCall": 0,
+        "maxNodesPerHistoryUpdateEvents": 0,
+        "maxNodesPerTranslateBrowsePathsToNodeIds": 0,
+        "maxConnectionsPerEndpoint": 20,
+        "maxMessageSize": 4096,
+        "maxBufferSize": 4096,
+        "maxSessions": 20,
+        "x": 630,
+        "y": 340,
+        "wires": [
+            [
+                "c3e2dd546b7ef705"
+            ]
+        ]
+    },
+    {
+        "id": "c3e2dd546b7ef705",
+        "type": "OpcUa-Item",
+        "z": "70a1e0ab1144cc06",
+        "item": "ns=3;s=aa",
+        "datatype": "Float",
+        "value": "2",
+        "name": "aa",
+        "x": 650,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    }
+]
