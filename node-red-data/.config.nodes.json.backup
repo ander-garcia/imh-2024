@@ -1,7 +1,7 @@
 {
     "node-red": {
         "name": "node-red",
-        "version": "3.0.2",
+        "version": "3.1.5",
         "local": false,
         "user": false,
         "nodes": {
@@ -94,6 +94,17 @@
                 "user": false,
                 "module": "node-red",
                 "file": "/usr/src/node-red/node_modules/@node-red/nodes/core/common/90-comment.js"
+            },
+            "global-config": {
+                "name": "global-config",
+                "types": [
+                    "global-config"
+                ],
+                "enabled": true,
+                "local": false,
+                "user": false,
+                "module": "node-red",
+                "file": "/usr/src/node-red/node_modules/@node-red/nodes/core/common/91-global-config.js"
             },
             "unknown": {
                 "name": "unknown",
@@ -930,6 +941,26 @@
                 "user": false,
                 "module": "node-red-contrib-ui_j",
                 "file": "/data/node_modules/node-red-contrib-ui_j/nodes/ui_traffic.js"
+            }
+        }
+    },
+    "node-red-contrib-re-postgres": {
+        "name": "node-red-contrib-re-postgres",
+        "version": "0.3.4",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "PostgreSql": {
+                "name": "PostgreSql",
+                "types": [
+                    "postgresdb",
+                    "postgres"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-re-postgres",
+                "file": "/data/node_modules/node-red-contrib-re-postgres/lib/pg.js"
             }
         }
     }
