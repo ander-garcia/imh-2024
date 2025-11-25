@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS public.boiler
     top real,
     bottom real,
     pressure real,
-    "heaterState" smallint
+    "heaterState" smallint,
+    "boilerId" text
 );
     SELECT create_hypertable('boiler','time');    
 

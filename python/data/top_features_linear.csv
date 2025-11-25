@@ -1,0 +1,133 @@
+Feature,Mean_R2
+WEC: Production kWh_24HR,0.07428332
+WEC: Production kWh_72HR,0.07401105999999999
+WEC: Production kWh_08HR,0.0731801
+WEC: Production kWh,0.07230452000000001
+Inverter averages_72HR,0.06945982
+Inverter averages_24HR,0.06525792
+WEC: Operating Hours_24HR,0.06472333999999999
+WEC: Operating Hours_08HR,0.06397872
+WEC: Operating Hours_72HR,0.06395310000000001
+WEC: min. reactive Power_72HR,0.06382774
+WEC: Operating Hours,0.06333346
+WEC: min. reactive Power_24HR,0.060505300000000005
+Inverter averages_08HR,0.06040628
+WEC: ava. reactive Power_72HR,0.056835159999999996
+WEC: ava. blade angle A_72HR,0.05669482
+WEC: ava. blade angle A_24HR,0.05655737999999999
+Inverter averages,0.05593646000000001
+WEC: ava. blade angle A_08HR,0.054879880000000006
+WEC: ava. reactive Power_24HR,0.05284123999999999
+WEC: max. reactive Power_72HR,0.05232696
+WEC: min. reactive Power_08HR,0.05204485999999999
+C1_Temp_72HR,0.04951894
+WEC: max. reactive Power_24HR,0.0475284
+WEC: ava. blade angle A,0.0460324
+WEC: ava. reactive Power_08HR,0.0456974
+C1_Temp_24HR,0.04534903999999999
+C6_Temp_24HR,0.04413838
+WEC: ava. Rotation_24HR,0.04358642
+WEC: max. Rotation_24HR,0.04279532
+C1_Temp_08HR,0.04250448
+WEC: ava. Rotation_08HR,0.041644640000000004
+C1_Temp,0.0415109
+WEC: min. reactive Power,0.04115268
+WEC: max. Rotation_08HR,0.04109352
+WEC: max. reactive Power_08HR,0.04095918
+WEC: ava. Rotation_72HR,0.04095472
+WEC: max. Rotation_72HR,0.04041042
+C2_Temp_24HR,0.04038262
+WEC: min. Rotation_24HR,0.04020434
+WEC: ava. reactive Power,0.0400014
+C2_Temp_72HR,0.039675520000000006
+C4_Temp_72HR,0.03905084
+WEC: min. Rotation_72HR,0.03839998
+C6_Temp_72HR,0.03819594
+C6_Temp_08HR,0.038104860000000004
+WEC: min. Rotation_08HR,0.03729598
+C2_Temp_08HR,0.0363007
+WEC: max. Rotation,0.03589096
+WEC: ava. Rotation,0.03583267999999999
+C2_Temp,0.03373438
+C8_Temp_72HR,0.0325309
+WEC: max. reactive Power,0.03215478
+RTU: ava. Setpoint 1_72HR,0.03190398
+C4_Temp_24HR,0.030237620000000003
+WEC: min. Rotation,0.028916579999999997
+C6_Temp,0.027937060000000003
+RTU: ava. Setpoint 1_24HR,0.027149280000000005
+RTU: ava. Setpoint 1_08HR,0.025700060000000004
+RTU: ava. Setpoint 1,0.02455
+C4_Temp_08HR,0.02363182
+C5_Temp_72HR,0.02317722
+C3_Temp_72HR,0.02310408
+Inverter std dev_72HR,0.02138458
+C4_Temp,0.01873914
+C3_Temp_24HR,0.0166782
+WEC: min. windspeed_72HR,0.014836779999999999
+C8_Temp_24HR,0.014407880000000001
+Inverter std dev_24HR,0.01409198
+WEC: max. Power_72HR,0.013729340000000001
+C9_Temp_72HR,0.01331576
+WEC: ava. Nacel position including cable twisting_72HR,0.013309540000000003
+WEC: ava. Power_72HR,0.012785459999999998
+WEC: min. Power_72HR,0.01265436
+WEC: ava. Nacel position including cable twisting_24HR,0.012622
+WEC: max. Power,0.01199668
+WEC: max. Power_24HR,0.01186636
+WEC: max. Power_08HR,0.011571040000000001
+WEC: ava. Nacel position including cable twisting_08HR,0.01131302
+C3_Temp_08HR,0.01109094
+WEC: ava. Power_24HR,0.01082284
+C5_Temp_24HR,0.01076098
+WEC: min. Power_24HR,0.010493520000000001
+WEC: ava. Nacel position including cable twisting,0.01040342
+WEC: ava. Power_08HR,0.01037118
+WEC: ava. Power,0.010273899999999999
+Inverter std dev_08HR,0.0096656
+WEC: min. Power_08HR,0.009265579999999999
+C8_Temp_08HR,0.00910276
+C3_Temp,0.00864568
+WEC: min. Power,0.0082614
+WEC: min. windspeed_24HR,0.00810132
+C5_Temp_08HR,0.007597339999999999
+C8_Temp,0.00741806
+WEC: max. windspeed,0.007240539999999999
+C9_Temp_24HR,0.00696524
+WEC: max. windspeed_08HR,0.0064223200000000005
+WEC: max. windspeed_72HR,0.00607684
+C5_Temp,0.0059824399999999995
+WEC: ava. Available P force external reasons_08HR,0.005583240000000001
+WEC: ava. available P from wind_08HR,0.0054822
+WEC: ava. windspeed,0.0052967199999999996
+Inverter std dev,0.00529466
+WEC: min. windspeed_08HR,0.00510636
+WEC: max. windspeed_24HR,0.0049648999999999995
+WEC: ava. available P from wind_24HR,0.00477884
+WEC: ava. Available P force external reasons_24HR,0.0047609
+C9_Temp_08HR,0.004573939999999999
+WEC: Production minutes_08HR,0.00427578
+WEC: Production minutes_72HR,0.00426522
+WEC: ava. windspeed_08HR,0.004018
+WEC: ava. Available P force external reasons,0.00391682
+WEC: ava. available P from wind,0.00377674
+WEC: ava. Available P force majeure reasons_72HR,0.0037332000000000003
+C7_Temp_08HR,0.0037056599999999995
+WEC: Production minutes_24HR,0.00357766
+C9_Temp,0.0034583599999999997
+C7_Temp,0.003082
+WEC: ava. available P technical reasons_08HR,0.00298426
+WEC: ava. available P technical reasons,0.0027731599999999998
+WEC: min. windspeed,0.0027298
+WEC: ava. Available P force majeure reasons,0.00272356
+WEC: ava. Available P force majeure reasons_08HR,0.00256886
+WEC: ava. available P technical reasons_24HR,0.00239806
+WEC: ava. windspeed_24HR,0.0021977200000000002
+WEC: ava. Available P force majeure reasons_24HR,0.00165132
+WEC: ava. available P from wind_72HR,0.00163686
+C7_Temp_24HR,0.0016119599999999997
+WEC: ava. Available P force external reasons_72HR,0.0015776800000000001
+WEC: Production minutes,0.001473
+WEC: ava. windspeed_72HR,0.00134742
+C7_Temp_72HR,0.00096272
+WEC: ava. available P technical reasons_72HR,0.00045478
