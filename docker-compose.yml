@@ -100,6 +100,35 @@ services:
       - ./mosquitto/p.txt:/mosquitto/config/mosquitto.passwd
     networks:
       - imh_net
+  mqtt-web:
+    # MQTTX Web: browser MQTT client, open http://localhost:8086
+    # The client runs in the browser, so it reaches Mosquitto over WebSockets on the
+    # host-published port (MQTT_WS_PORT, 9002 -> mqtt:9001), not via the Docker network.
+    image: emqx/mqttx-web:v1.13.3
+    container_name: mqtt-web
+    environment:
+      - MQTT_WS_PORT=9002
+      - MQTT_USERNAME=imh-client
+    # MQTTX Web has its defaults compiled in (broker.emqx.io:8083). Patch them on start so
+    # "New Connection" is prefilled with this stack's broker: ws://<page host>:9002/mqtt.
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        cd /app
+        [ -f app.js.orig ] || cp app.js app.js.orig
+        sed -e 's/(_a = \\"broker.emqx.io\\")/(_a = window.location.hostname)/' \
+            -e "s/? 8084 : 8083,/? 8084 : $${MQTT_WS_PORT},/" \
+            -e "s/name: '',\\\\n    clean: true/name: 'imh-mosquitto',\\\\n    clean: true/" \
+            -e "s/username: '',\\\\n    password: '',\\\\n    path: '\\/mqtt'/username: '$${MQTT_USERNAME}',\\\\n    password: '',\\\\n    path: '\\/mqtt'/" \
+            app.js.orig > app.js
+        exec http-server -p 80 -c-1
+    ports:
+      - "8086:80"
+    depends_on:
+      - mqtt
+    restart: unless-stopped
+    networks:
+      - imh_net
 networks:
   imh_net:
 volumes:

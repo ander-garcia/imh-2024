@@ -14,10 +14,56 @@
                 "view-node-info-icon": true
             },
             "tours": {
-                "welcome": "3.0.2"
+                "welcome": "5.0.10"
             },
             "context": {
                 "flowRefresh": true
+            },
+            "sidebar": {
+                "state": {
+                    "v": 4,
+                    "tabs": [],
+                    "primary": {
+                        "width": 300,
+                        "top": {
+                            "tabs": [
+                                "info",
+                                "help",
+                                "config",
+                                "context",
+                                "dashboard-2.0"
+                            ],
+                            "height": 301.454546,
+                            "hidden": false,
+                            "active": "info"
+                        },
+                        "bottom": {
+                            "tabs": [
+                                "debug"
+                            ],
+                            "hidden": false,
+                            "active": "debug"
+                        }
+                    },
+                    "secondary": {
+                        "width": 210,
+                        "top": {
+                            "tabs": [
+                                "explorer"
+                            ],
+                            "height": 301.454546,
+                            "hidden": false,
+                            "active": "explorer"
+                        },
+                        "bottom": {
+                            "tabs": [
+                                "palette"
+                            ],
+                            "hidden": false,
+                            "active": "palette"
+                        }
+                    }
+                }
             }
         },
         "debug": {

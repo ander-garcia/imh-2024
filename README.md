@@ -18,3 +18,7 @@ First run / after upgrading:
   Export any data you need from the old volume with `pg_dump` before removing it.
 
 Python examples (`python/`) require Python >= 3.12: `pip install -r python/requirements.txt`.
+
+MQTT web client: open http://localhost:8086 (MQTTX Web). Click "New Connection": it is prefilled with
+`ws://<host>:9002/mqtt` and user `imh-client`; enter the password and connect. The broker's WebSocket
+listener (container port 9001) is published on host port 9002.
