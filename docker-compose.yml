@@ -2,7 +2,7 @@ services:
   opc-micro:
     image: mcr.microsoft.com/iotedge/opc-plc:2.15.16
     container_name: "opc-micro"
-    command: --nodesfile /home/nodesfile.json --pn=50000  --autoaccept --unsecuretransport  --ctb --sph --sn=8 --sr=10 --st=uint --fn=8 --fr=1 --ft=double
+    command: --nodesfile /home/nodesfile.json --pn=50000  --autoaccept --unsecuretransport  --sph --sn=8 --sr=10 --st=uint --fn=8 --fr=1 --ft=double
     volumes:
       - ./opc-micro/nodesfile.json:/home/nodesfile.json
     ports:
