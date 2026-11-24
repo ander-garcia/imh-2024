@@ -11,7 +11,7 @@ from bentoml.validators import ContentType
 Image = t.Annotated[Path, ContentType("image/*")]
 
 image = (
-    bentoml.images.Image(python_version="3.11", lock_python_packages=False)
+    bentoml.images.Image(python_version="3.12", lock_python_packages=False)
     # .system_packages(
     #     "libgl1",
     #     "libglx-mesa0",
@@ -31,7 +31,7 @@ class YoloService:
     def __init__(self):
         from ultralytics import YOLO
 
-        yolo_model = os.getenv("YOLO_MODEL", "yolo11n.pt")
+        yolo_model = os.getenv("YOLO_MODEL", "yolo26n.pt")
 
         self.model = YOLO(yolo_model)
 

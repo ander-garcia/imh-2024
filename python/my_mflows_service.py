@@ -6,7 +6,7 @@ import pandas as pd
 from pydantic import BaseModel, Field
 
 # Minimal image spec including scikit-learn
-demo_image = bentoml.images.Image(python_version="3.11").python_packages("scikit-learn")
+demo_image = bentoml.images.Image(python_version="3.12").python_packages("scikit-learn")
 
 
 class ErrorPrediction(BaseModel):

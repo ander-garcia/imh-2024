@@ -1,7 +1,6 @@
-version: "3.2"
 services:
   opc-micro:
-    image: mcr.microsoft.com/iotedge/opc-plc:latest
+    image: mcr.microsoft.com/iotedge/opc-plc:2.15.16
     container_name: "opc-micro"
     command: --nodesfile /home/nodesfile.json --pn=50000  --autoaccept --unsecuretransport  --ctb --sph --sn=8 --sr=10 --st=uint --fn=8 --fr=1 --ft=double
     volumes:
@@ -12,7 +11,7 @@ services:
     networks:
       - imh_net
   timescaledb:
-    image: timescale/timescaledb:latest-pg14
+    image: timescale/timescaledb:2.32.1-pg18
     container_name: "timescaledb"
     ports:
       - 2002:5432
@@ -30,13 +29,14 @@ services:
     volumes:
       - ./postgres/initdb001.sh:/docker-entrypoint-initdb.d/init001.sh
       - ./postgres/initdb002.sh:/docker-entrypoint-initdb.d/init002.sh
-      - timescale-data:/var/lib/postgresql/data
+      # PostgreSQL 18+ images keep PGDATA under /var/lib/postgresql/<major>/docker
+      - timescale-data-pg18:/var/lib/postgresql
 
     networks:
       - imh_net
   pgadmindb:
     container_name: pgadmin4db
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:9.19.0
     ports:
       - "5051:80"
     environment:
@@ -48,7 +48,7 @@ services:
     networks:
       - imh_net
   grafana:
-    image: grafana/grafana-oss:latest
+    image: grafana/grafana-oss:13.0.2
     container_name: monitoring_grafana
     volumes:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
@@ -67,7 +67,6 @@ services:
       - GRAFANA_DDBB_PASSWORD=grafanaPass2022
       - GF_SECURITY_ADMIN_PASSWORD=MYPASSWORT
       - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_FEATURE_TOGGLES_ENABLE=ngalert
       - GF_PLUGINS_PLUGIN_ADMIN_ENABLED=true
       - GF_SKIP_VERIFY=true
     restart: unless-stopped
@@ -76,7 +75,7 @@ services:
     networks:
       - imh_net
   node-red:
-    image: nodered/node-red:latest
+    image: nodered/node-red:5.0.10
     environment:
       - TZ=Europe/Madrid
     ports:
@@ -87,7 +86,7 @@ services:
     volumes:
       - ./node-red-data:/data
   mqtt:
-    image: eclipse-mosquitto:2.0.18
+    image: eclipse-mosquitto:2.1.4-alpine
     hostname: mqtt
     container_name: mqtt
     ports:
@@ -102,4 +101,4 @@ networks:
   imh_net:
 volumes:
   grafana-storage:
-  timescale-data:
+  timescale-data-pg18:
