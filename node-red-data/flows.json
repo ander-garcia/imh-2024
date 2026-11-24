@@ -180,10 +180,10 @@
         "idleFieldType": "num",
         "connectionTimeout": "10000",
         "connectionTimeoutFieldType": "num",
-        "user": "postgres",
-        "userFieldType": "str",
-        "password": "p4ssw0rd",
-        "passwordFieldType": "str"
+        "userFieldType": "cred",
+        "passwordFieldType": "cred",
+        "userEnv": "",
+        "passwordEnv": ""
     },
     {
         "id": "6301ae3ad5f3f42b",
@@ -271,7 +271,7 @@
         "type": "function",
         "z": "4e7e12c07ca7c4f9",
         "name": "AddSourceTimestampToPayload",
-        "func": "msg.payload = JSON.parse(JSON.stringify(msg.payload))\nif (!msg.payload.pressure) {\n    // heater is off\n    msg.payload = {}\n    msg.payload.data = {}\n    msg.payload.data.temperature = {}\n    msg.payload.data.temperature.top = -1,\n    msg.payload.data.temperature.bottom = -1\n    msg.payload.data.pressure = -1\n    msg.payload.data.heaterState = 0\n}\nelse \n{\n    var newPayload = {}\n    newPayload = msg.payload\n    msg.payload = {}\n    msg.payload.data = newPayload\n}\nvar TIME_OFFSET = 0\nvar serverTime = msg.serverTimestamp\nserverTime.setHours( serverTime.getHours() +  TIME_OFFSET);\nmsg.payload.time = serverTime.toISOString()\nmsg.payload.id = \"boiler01\"\nreturn msg;",
+        "func": "msg.payload = JSON.parse(JSON.stringify(msg.payload))\nif (!msg.payload.pressure) {\n    // heater is off\n    msg.payload = {}\n    msg.payload.data = {}\n    msg.payload.data.temperature = {}\n    msg.payload.data.temperature.top = -1,\n    msg.payload.data.temperature.bottom = -1\n    msg.payload.data.pressure = -1\n    msg.payload.data.heaterState = 0\n}\nelse \n{\n    var newPayload = {}\n    newPayload = msg.payload\n    msg.payload = {}\n    msg.payload.data = newPayload\n}\nvar TIME_OFFSET = 0\n// first notification after (re)connect may arrive without serverTimestamp\nvar serverTime = msg.serverTimestamp ? new Date(msg.serverTimestamp) : new Date()\nserverTime.setHours( serverTime.getHours() +  TIME_OFFSET);\nmsg.payload.time = serverTime.toISOString()\nmsg.payload.id = \"boiler01\"\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -675,7 +675,7 @@
         "repeat": "",
         "crontab": "",
         "once": true,
-        "onceDelay": "1",
+        "onceDelay": "10",
         "topic": "",
         "payload": "",
         "payloadType": "date",

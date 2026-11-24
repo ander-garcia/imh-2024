@@ -186,6 +186,15 @@
         "passwordFieldType": "str"
     },
     {
+        "id": "6301ae3ad5f3f42b",
+        "type": "postgresdb",
+        "cfgname": "timescale",
+        "hostname": "timescaledb",
+        "port": "5432",
+        "db": "in4pl",
+        "ssl": false
+    },
+    {
         "id": "1bb3b998da0f4fab",
         "type": "OpcUa-Item",
         "z": "4e7e12c07ca7c4f9",
@@ -508,7 +517,7 @@
         "type": "debug",
         "z": "9ce7af8b8798dd30",
         "name": "",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -536,7 +545,7 @@
         "wires": [
             [
                 "31abe50555aa6850",
-                "1f559bc1bc3cdea0"
+                "b440f2d739426698"
             ]
         ]
     },
@@ -596,24 +605,6 @@
         ]
     },
     {
-        "id": "1f559bc1bc3cdea0",
-        "type": "postgresql",
-        "z": "9ce7af8b8798dd30",
-        "name": "",
-        "query": "",
-        "postgreSQLConfig": "1c87d60af1cce389",
-        "split": false,
-        "rowsPerMsg": 1,
-        "outputs": 1,
-        "x": 610,
-        "y": 400,
-        "wires": [
-            [
-                "473d7508c953e94c"
-            ]
-        ]
-    },
-    {
         "id": "473d7508c953e94c",
         "type": "debug",
         "z": "9ce7af8b8798dd30",
@@ -628,6 +619,26 @@
         "statusType": "auto",
         "x": 850,
         "y": 400,
+        "wires": []
+    },
+    {
+        "id": "b440f2d739426698",
+        "type": "postgres",
+        "z": "9ce7af8b8798dd30",
+        "postgresdb": "6301ae3ad5f3f42b",
+        "name": "",
+        "output": false,
+        "perrow": false,
+        "rowspermsg": "1",
+        "return_on_error": false,
+        "limit_queries": "0",
+        "limit_by": "payload",
+        "limit_value": "1",
+        "limit_drop_intermediate": false,
+        "limit_drop_if_in_queue": false,
+        "outputs": false,
+        "x": 620,
+        "y": 480,
         "wires": []
     },
     {

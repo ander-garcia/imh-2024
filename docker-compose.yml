@@ -68,6 +68,9 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=MYPASSWORT
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_PLUGINS_PLUGIN_ADMIN_ENABLED=true
+      # Bundled plugins (e.g. elasticsearch) are not writable by the grafana user in the 13.x image,
+      # so auto-updating them fails at startup; keep the bundled versions instead.
+      - GF_PLUGINS_PREINSTALL_AUTO_UPDATE=false
       - GF_SKIP_VERIFY=true
     restart: unless-stopped
     depends_on:
