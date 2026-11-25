@@ -129,6 +129,27 @@ services:
     restart: unless-stopped
     networks:
       - imh_net
+  opcua-client:
+    # OPC UA explorer (UaExpert-like: address-space tree, attributes, references,
+    # subscriptions, live graph, method calls) shown in the browser: http://localhost:5800
+    # FreeOpcUa opcua-client running inside the container; it reaches the OPC server over
+    # the Docker network, so the endpoint is opc-micro:50000 (preselected in the address box).
+    build: ./opcua-client
+    image: imh/opcua-client:1.0.2
+    container_name: opcua-client
+    environment:
+      - OPCUA_DEFAULT_ENDPOINT=opc.tcp://opc-micro:50000
+      - TZ=Europe/Madrid
+      - DISPLAY_WIDTH=1600
+      - DISPLAY_HEIGHT=900
+      - KEEP_APP_RUNNING=1
+    ports:
+      - "5800:5800"
+    depends_on:
+      - opc-micro
+    restart: unless-stopped
+    networks:
+      - imh_net
 networks:
   imh_net:
 volumes:
