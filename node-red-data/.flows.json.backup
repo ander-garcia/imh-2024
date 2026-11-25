@@ -24,6 +24,14 @@
         "env": []
     },
     {
+        "id": "6412a3edf88a23b2",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "ef0a1b42cde475be",
         "type": "OpcUa-Endpoint",
         "endpoint": "opc.tcp://opc-micro:50000",
@@ -90,19 +98,6 @@
         "sessionExpiry": ""
     },
     {
-        "id": "d3f0927a105105cf",
-        "type": "ui-group",
-        "name": "Boiler",
-        "page": "f989edf84a666335",
-        "width": "6",
-        "height": "1",
-        "order": -1,
-        "showTitle": true,
-        "className": "",
-        "visible": "true",
-        "disabled": "false"
-    },
-    {
         "id": "ed111dbbab6f6610",
         "type": "ui-base",
         "name": "UI Name",
@@ -155,7 +150,7 @@
         "icon": "home",
         "layout": "grid",
         "theme": "a383aa01253039ae",
-        "order": -1,
+        "order": 1,
         "className": "",
         "visible": "true",
         "disabled": "false"
@@ -180,10 +175,10 @@
         "idleFieldType": "num",
         "connectionTimeout": "10000",
         "connectionTimeoutFieldType": "num",
-        "user": "postgres",
-        "userFieldType": "str",
-        "password": "p4ssw0rd",
-        "passwordFieldType": "str"
+        "userFieldType": "cred",
+        "userEnv": "",
+        "passwordFieldType": "cred",
+        "passwordEnv": ""
     },
     {
         "id": "6301ae3ad5f3f42b",
@@ -193,6 +188,19 @@
         "port": "5432",
         "db": "in4pl",
         "ssl": false
+    },
+    {
+        "id": "d3f0927a105105cf",
+        "type": "ui-group",
+        "name": "Boiler",
+        "page": "f989edf84a666335",
+        "width": "6",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
     },
     {
         "id": "1bb3b998da0f4fab",
@@ -237,6 +245,7 @@
             [
                 "3a1144546c024def"
             ],
+            [],
             []
         ]
     },
@@ -271,7 +280,7 @@
         "type": "function",
         "z": "4e7e12c07ca7c4f9",
         "name": "AddSourceTimestampToPayload",
-        "func": "msg.payload = JSON.parse(JSON.stringify(msg.payload))\nif (!msg.payload.pressure) {\n    // heater is off\n    msg.payload = {}\n    msg.payload.data = {}\n    msg.payload.data.temperature = {}\n    msg.payload.data.temperature.top = -1,\n    msg.payload.data.temperature.bottom = -1\n    msg.payload.data.pressure = -1\n    msg.payload.data.heaterState = 0\n}\nelse \n{\n    var newPayload = {}\n    newPayload = msg.payload\n    msg.payload = {}\n    msg.payload.data = newPayload\n}\nvar TIME_OFFSET = 0\nvar serverTime = msg.serverTimestamp\nserverTime.setHours( serverTime.getHours() +  TIME_OFFSET);\nmsg.payload.time = serverTime.toISOString()\nmsg.payload.id = \"boiler01\"\nreturn msg;",
+        "func": "msg.payload = JSON.parse(JSON.stringify(msg.payload))\nif (!msg.payload.pressure) {\n    // heater is off\n    msg.payload = {}\n    msg.payload.data = {}\n    msg.payload.data.temperature = {}\n    msg.payload.data.temperature.top = -1,\n    msg.payload.data.temperature.bottom = -1\n    msg.payload.data.pressure = -1\n    msg.payload.data.heaterState = 0\n}\nelse \n{\n    var newPayload = {}\n    newPayload = msg.payload\n    msg.payload = {}\n    msg.payload.data = newPayload\n}\nvar TIME_OFFSET = 0\n// first notification after (re)connect may arrive without serverTimestamp\nvar serverTime = msg.serverTimestamp ? new Date(msg.serverTimestamp) : new Date()\nserverTime.setHours( serverTime.getHours() +  TIME_OFFSET);\nmsg.payload.time = serverTime.toISOString()\nmsg.payload.id = \"boiler01\"\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -396,7 +405,7 @@
         "type": "ui-text",
         "z": "4e7e12c07ca7c4f9",
         "group": "d3f0927a105105cf",
-        "order": 0,
+        "order": 2,
         "width": 0,
         "height": 0,
         "name": "temp top",
@@ -419,7 +428,7 @@
         "group": "d3f0927a105105cf",
         "name": "",
         "label": "chart",
-        "order": 9007199254740991,
+        "order": 3,
         "chartType": "line",
         "category": "topic",
         "categoryType": "msg",
@@ -461,7 +470,7 @@
         "type": "ui-text",
         "z": "4e7e12c07ca7c4f9",
         "group": "d3f0927a105105cf",
-        "order": 0,
+        "order": 1,
         "width": 0,
         "height": 0,
         "name": "temp down",
@@ -636,7 +645,7 @@
         "limit_value": "1",
         "limit_drop_intermediate": false,
         "limit_drop_if_in_queue": false,
-        "outputs": false,
+        "outputs": 0,
         "x": 620,
         "y": 480,
         "wires": []
@@ -675,7 +684,7 @@
         "repeat": "",
         "crontab": "",
         "once": true,
-        "onceDelay": "1",
+        "onceDelay": "10",
         "topic": "",
         "payload": "",
         "payloadType": "date",
@@ -695,7 +704,6 @@
         "port": "53880",
         "name": "aaa",
         "endpoint": "",
-        "users": "users.json",
         "nodesetDir": "",
         "autoAcceptUnknownCertificate": true,
         "registerToDiscovery": false,

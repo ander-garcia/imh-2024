@@ -27,3 +27,11 @@ OPC UA explorer (UaExpert-like, FreeOpcUa opcua-client): open http://localhost:5
 `opc.tcp://opc-micro:50000`; click Connect, keep Security "None" / Anonymous and click Connect again. Browse the tree,
 right-click a variable to subscribe or plot it. The image is built locally from `opcua-client/`
 (first `docker compose up` builds it; rebuild with `docker compose build opcua-client`).
+
+Quality-control simulator (`opc-calidad`, built from `opc-calidad/`): an OPC UA server that simulates a vision
+inspection station. Every `PERIODO` seconds (default 2) it publishes, under the `ControlCalidad` object:
+`ns=2;s=Imagen` (PNG, ByteString), `ns=2;s=Cota_mm` (Double, nominal 25.00 ± 0.10 mm),
+`ns=2;s=Resultado` (Int16, 1 = OK, 0 = NOT OK) and `ns=2;s=Contador` (UInt32).
+Endpoint: `opc.tcp://opc-calidad:4840/calidad` from other containers (Node-RED, OPC UA explorer), or
+`opc.tcp://localhost:4840/calidad` from the host. `opc-calidad/flujo_nodered_calidad.json` is a Node-RED flow
+(needs `node-red-contrib-opcua` and `node-red-dashboard`) already pointing to the container endpoint.

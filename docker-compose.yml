@@ -10,6 +10,20 @@ services:
       - "8085:8080"
     networks:
       - imh_net
+  opc-calidad:
+    # Simulador OPC UA de control de calidad por visión (opc-calidad/servidor_opcua_calidad.py).
+    # Endpoint: opc.tcp://opc-calidad:4840/calidad dentro de la red Docker,
+    # opc.tcp://localhost:4840/calidad desde el equipo. Nodos ns=2;s=Imagen|Cota_mm|Resultado|Contador
+    build: ./opc-calidad
+    image: imh/opc-calidad:1.0.0
+    container_name: opc-calidad
+    environment:
+      - PERIODO=2   # segundos entre piezas
+    ports:
+      - "4840:4840"
+    restart: unless-stopped
+    networks:
+      - imh_net
   timescaledb:
     image: timescale/timescaledb:2.32.1-pg18
     container_name: "timescaledb"

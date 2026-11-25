@@ -1,0 +1,457 @@
+[
+  {
+    "id": "tab_qc",
+    "type": "tab",
+    "label": "Control de calidad OPC UA",
+    "disabled": false,
+    "info": "Lee el simulador OPC UA de control de calidad (servicio opc-calidad) y lo muestra en Dashboard 2 (@flowfuse/node-red-dashboard), página /dashboard/calidad."
+  },
+  {
+    "id": "ep_qc",
+    "type": "OpcUa-Endpoint",
+    "endpoint": "opc.tcp://opc-calidad:4840/calidad",
+    "secpol": "None",
+    "secmode": "None",
+    "none": true,
+    "login": false,
+    "usercert": false,
+    "usercertificate": "",
+    "userprivatekey": ""
+  },
+  {
+    "id": "ed111dbbab6f6610",
+    "type": "ui-base",
+    "name": "UI Name",
+    "path": "/dashboard",
+    "includeClientData": true,
+    "acceptsClientConfig": [
+      "ui-notification",
+      "ui-control"
+    ],
+    "showPathInSidebar": false
+  },
+  {
+    "id": "a383aa01253039ae",
+    "type": "ui-theme",
+    "name": "Theme Name",
+    "colors": {
+      "surface": "#ffffff",
+      "primary": "#0094ce",
+      "bgPage": "#eeeeee",
+      "groupBg": "#ffffff",
+      "groupOutline": "#cccccc"
+    },
+    "sizes": {
+      "pagePadding": "12px",
+      "groupGap": "12px",
+      "groupBorderRadius": "4px",
+      "widgetGap": "12px"
+    }
+  },
+  {
+    "id": "ui_page_qc",
+    "type": "ui-page",
+    "name": "Control de calidad",
+    "ui": "ed111dbbab6f6610",
+    "path": "/calidad",
+    "icon": "check-decagram",
+    "layout": "grid",
+    "theme": "a383aa01253039ae",
+    "breakpoints": [
+      { "name": "Default", "px": 0, "cols": 3 },
+      { "name": "Tablet", "px": 576, "cols": 6 },
+      { "name": "Small Desktop", "px": 768, "cols": 9 },
+      { "name": "Desktop", "px": 1024, "cols": 12 }
+    ],
+    "tabs": [],
+    "order": 2,
+    "className": "",
+    "visible": "true",
+    "disabled": "false"
+  },
+  {
+    "id": "ui_g_img",
+    "type": "ui-group",
+    "name": "Imagen de la pieza",
+    "page": "ui_page_qc",
+    "width": "6",
+    "height": "1",
+    "order": 1,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default",
+    "keepLoaded": false,
+    "tab": ""
+  },
+  {
+    "id": "ui_g_med",
+    "type": "ui-group",
+    "name": "Medida y resultado",
+    "page": "ui_page_qc",
+    "width": "6",
+    "height": "1",
+    "order": 2,
+    "showTitle": true,
+    "className": "",
+    "visible": "true",
+    "disabled": "false",
+    "groupType": "default",
+    "keepLoaded": false,
+    "tab": ""
+  },
+  {
+    "id": "inj",
+    "type": "inject",
+    "z": "tab_qc",
+    "name": "Suscribir al arrancar",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "1",
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 150,
+    "y": 200,
+    "wires": [
+      [
+        "it0",
+        "it1",
+        "it2",
+        "it3"
+      ]
+    ]
+  },
+  {
+    "id": "it0",
+    "type": "OpcUa-Item",
+    "z": "tab_qc",
+    "item": "ns=2;s=Imagen",
+    "datatype": "ByteString",
+    "value": "",
+    "name": "Imagen",
+    "x": 360,
+    "y": 80,
+    "wires": [
+      [
+        "cli"
+      ]
+    ]
+  },
+  {
+    "id": "it1",
+    "type": "OpcUa-Item",
+    "z": "tab_qc",
+    "item": "ns=2;s=Cota_mm",
+    "datatype": "Double",
+    "value": "",
+    "name": "Cota_mm",
+    "x": 360,
+    "y": 140,
+    "wires": [
+      [
+        "cli"
+      ]
+    ]
+  },
+  {
+    "id": "it2",
+    "type": "OpcUa-Item",
+    "z": "tab_qc",
+    "item": "ns=2;s=Resultado",
+    "datatype": "Int16",
+    "value": "",
+    "name": "Resultado",
+    "x": 360,
+    "y": 200,
+    "wires": [
+      [
+        "cli"
+      ]
+    ]
+  },
+  {
+    "id": "it3",
+    "type": "OpcUa-Item",
+    "z": "tab_qc",
+    "item": "ns=2;s=Contador",
+    "datatype": "UInt32",
+    "value": "",
+    "name": "Contador",
+    "x": 360,
+    "y": 260,
+    "wires": [
+      [
+        "cli"
+      ]
+    ]
+  },
+  {
+    "id": "cli",
+    "type": "OpcUa-Client",
+    "z": "tab_qc",
+    "endpoint": "ep_qc",
+    "action": "subscribe",
+    "deadbandtype": "a",
+    "deadbandvalue": "0",
+    "time": "1",
+    "timeUnit": "s",
+    "certificate": "n",
+    "localfile": "",
+    "localkeyfile": "",
+    "securitymode": "None",
+    "securitypolicy": "None",
+    "useTransport": false,
+    "maxChunkCount": "1",
+    "maxMessageSize": "8192",
+    "receiveBufferSize": "8192",
+    "sendBufferSize": "8192",
+    "setstatusandtime": false,
+    "keepsessionalive": false,
+    "name": "Cliente OPC UA",
+    "x": 560,
+    "y": 200,
+    "wires": [
+      [
+        "route"
+      ]
+    ]
+  },
+  {
+    "id": "route",
+    "type": "function",
+    "z": "tab_qc",
+    "name": "Enrutar por nodo",
+    "func": "// Salidas: 1 imagen, 2 cota numérica (gauge + gráfico), 3 cota como texto, 4 resultado, 5 contador\nconst t = msg.topic || \"\";\nconst v = msg.payload;\nif (t.endsWith(\"Imagen\")) {\n    const b = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    return [{ payload: \"data:image/png;base64,\" + b.toString(\"base64\") }, null, null, null, null];\n}\nif (t.endsWith(\"Cota_mm\")) {\n    const cota = Number(v);\n    return [null, { payload: Math.round(cota * 1000) / 1000, topic: \"Cota\" }, { payload: cota.toFixed(3) }, null, null];\n}\nif (t.endsWith(\"Resultado\")) return [null, null, null, { payload: Number(v) }, null];\nif (t.endsWith(\"Contador\"))  return [null, null, null, null, { payload: Number(v) }];\nreturn null;",
+    "outputs": 5,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 770,
+    "y": 200,
+    "wires": [
+      [
+        "t_img"
+      ],
+      [
+        "g_cota",
+        "ch_cota"
+      ],
+      [
+        "tx_cota"
+      ],
+      [
+        "t_ok"
+      ],
+      [
+        "tx_cnt"
+      ]
+    ]
+  },
+  {
+    "id": "t_img",
+    "type": "ui-template",
+    "z": "tab_qc",
+    "group": "ui_g_img",
+    "page": "",
+    "ui": "",
+    "name": "Imagen",
+    "order": 1,
+    "width": "6",
+    "height": "6",
+    "head": "",
+    "format": "<template>\n    <img v-if=\"msg?.payload\" :src=\"msg.payload\" alt=\"Imagen de la pieza\" style=\"width: 100%; border-radius: 8px;\">\n    <div v-else style=\"text-align: center; padding: 24px; color: #888;\">Esperando imagen…</div>\n</template>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1010,
+    "y": 80,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "g_cota",
+    "type": "ui-gauge",
+    "z": "tab_qc",
+    "name": "Cota",
+    "group": "ui_g_med",
+    "order": 2,
+    "value": "payload",
+    "valueType": "msg",
+    "width": "6",
+    "height": "3",
+    "gtype": "gauge-half",
+    "gstyle": "needle",
+    "title": "Cota",
+    "alwaysShowTitle": false,
+    "floatingTitlePosition": "top-left",
+    "units": "mm",
+    "icon": "",
+    "prefix": "",
+    "suffix": "",
+    "segments": [
+      { "from": "24.7", "color": "#c62828" },
+      { "from": "24.9", "color": "#2e7d32" },
+      { "from": "25.1", "color": "#c62828" }
+    ],
+    "min": "24.7",
+    "max": "25.3",
+    "sizeThickness": 16,
+    "sizeGap": 4,
+    "sizeKeyThickness": 8,
+    "styleRounded": true,
+    "styleGlow": false,
+    "className": "",
+    "x": 1010,
+    "y": 160,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ch_cota",
+    "type": "ui-chart",
+    "z": "tab_qc",
+    "group": "ui_g_med",
+    "name": "Histórico cota",
+    "label": "Histórico de cota (mm)",
+    "order": 5,
+    "chartType": "line",
+    "category": "topic",
+    "categoryType": "msg",
+    "xAxisLabel": "",
+    "xAxisProperty": "",
+    "xAxisPropertyType": "timestamp",
+    "xAxisType": "time",
+    "xAxisFormat": "",
+    "xAxisFormatType": "auto",
+    "xmin": "",
+    "xmax": "",
+    "yAxisLabel": "mm",
+    "yAxisProperty": "payload",
+    "yAxisPropertyType": "msg",
+    "ymin": "24.6",
+    "ymax": "25.4",
+    "bins": 10,
+    "action": "append",
+    "stackSeries": false,
+    "pointShape": "circle",
+    "pointRadius": 3,
+    "showLegend": false,
+    "removeOlder": 1,
+    "removeOlderUnit": "3600",
+    "removeOlderPoints": "60",
+    "colors": [
+      "#1f77b4",
+      "#aec7e8",
+      "#ff7f0e",
+      "#2ca02c",
+      "#98df8a",
+      "#d62728",
+      "#ff9896",
+      "#9467bd",
+      "#c5b0d5"
+    ],
+    "textColor": [
+      "#666666"
+    ],
+    "textColorDefault": true,
+    "gridColor": [
+      "#e5e5e5"
+    ],
+    "gridColorDefault": true,
+    "width": "6",
+    "height": "5",
+    "className": "",
+    "interpolation": "linear",
+    "x": 1030,
+    "y": 200,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "tx_cota",
+    "type": "ui-text",
+    "z": "tab_qc",
+    "group": "ui_g_med",
+    "order": 3,
+    "width": "6",
+    "height": "1",
+    "name": "Cota numérica",
+    "label": "Cota medida",
+    "format": "{{msg.payload}} mm",
+    "layout": "row-spread",
+    "style": false,
+    "font": "",
+    "fontSize": 16,
+    "color": "#717171",
+    "wrapText": false,
+    "className": "",
+    "value": "payload",
+    "valueType": "msg",
+    "x": 1030,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "t_ok",
+    "type": "ui-template",
+    "z": "tab_qc",
+    "group": "ui_g_med",
+    "page": "",
+    "ui": "",
+    "name": "Resultado OK / NOT OK",
+    "order": 1,
+    "width": "6",
+    "height": "2",
+    "head": "",
+    "format": "<template>\n    <div v-if=\"msg?.payload !== undefined\" :style=\"{ background: msg.payload == 1 ? '#2e7d32' : '#c62828' }\" style=\"text-align: center; font-size: 2.4em; font-weight: 700; padding: 14px; border-radius: 10px; color: #fff;\">\n        {{ msg.payload == 1 ? 'OK' : 'NOT OK' }}\n    </div>\n    <div v-else style=\"text-align: center; padding: 14px; color: #888;\">Esperando resultado…</div>\n</template>",
+    "storeOutMessages": true,
+    "passthru": false,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "className": "",
+    "x": 1050,
+    "y": 280,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "tx_cnt",
+    "type": "ui-text",
+    "z": "tab_qc",
+    "group": "ui_g_med",
+    "order": 4,
+    "width": "6",
+    "height": "1",
+    "name": "Contador",
+    "label": "Pieza nº",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "style": false,
+    "font": "",
+    "fontSize": 16,
+    "color": "#717171",
+    "wrapText": false,
+    "className": "",
+    "value": "payload",
+    "valueType": "msg",
+    "x": 1010,
+    "y": 320,
+    "wires": []
+  }
+]
