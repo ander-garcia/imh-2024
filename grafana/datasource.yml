@@ -10,14 +10,17 @@ deleteDatasources:
 # what's available in the database
 datasources:
   - name: TimeScale
+    uid: timescale # fixed uid, referenced by the provisioned dashboards in grafana/dashboards/
     type: postgres
     orgId: 1
     url: $GRAFANA_DATA_HOST
-    database: $GRAFANA_DATA_DDBB
     user: $GRAFANA_DATA_USER
     secureJsonData:
       password: $GRAFANA_DATA_PASSSWORD
     jsonData:
+      # Current Grafana reads the database name from jsonData (the old top-level "database"
+      # field makes every panel fail with "You do not currently have a default database configured")
+      database: $GRAFANA_DATA_DDBB
       sslmode: "disable" # disable/require/verify-ca/verify-full
       maxOpenConns: 100 # must be >= 1 since Grafana 12 (0 = "unlimited" is no longer accepted)
       maxIdleConns: 2 # Grafana v5.4+

@@ -114,7 +114,7 @@
     "repeat": "",
     "crontab": "",
     "once": true,
-    "onceDelay": "1",
+    "onceDelay": "10",
     "topic": "",
     "payload": "",
     "payloadType": "date",

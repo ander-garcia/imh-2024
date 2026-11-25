@@ -1,0 +1,329 @@
+{
+  "uid": "imh-calidad",
+  "title": "Control de calidad",
+  "description": "Estación de inspección por visión (servicio opc-calidad). Datos de la tabla in4pl.calidad, guardados por Node-RED.",
+  "tags": ["imh", "calidad"],
+  "timezone": "browser",
+  "editable": true,
+  "graphTooltip": 1,
+  "refresh": "5s",
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": { "refresh_intervals": ["2s", "5s", "10s", "30s", "1m", "5m"] },
+  "schemaVersion": 41,
+  "version": 1,
+  "links": [
+    { "title": "Dashboards IMH", "type": "dashboards", "tags": ["imh"], "asDropdown": false, "includeVars": false, "keepTime": true, "icon": "external link", "targetBlank": false }
+  ],
+  "annotations": { "list": [] },
+  "templating": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Último resultado",
+      "gridPos": { "x": 0, "y": 0, "w": 5, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT resultado FROM calidad ORDER BY time DESC LIMIT 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": {
+              "1": { "text": "OK", "color": "green", "index": 0 },
+              "0": { "text": "NOT OK", "color": "red", "index": 1 } } }
+          ],
+          "noValue": "Sin datos",
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "green", "value": 1 } ] }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "background_solid", "graphMode": "none", "justifyMode": "center",
+        "textMode": "value", "orientation": "auto", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Pieza nº",
+      "gridPos": { "x": 5, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT pieza AS \"Pieza\" FROM calidad ORDER BY time DESC LIMIT 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "color": { "mode": "fixed", "fixedColor": "blue" },
+          "noValue": "—"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value", "graphMode": "none", "justifyMode": "center",
+        "textMode": "value", "orientation": "auto", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 3,
+      "type": "gauge",
+      "title": "Cota actual",
+      "gridPos": { "x": 9, "y": 0, "w": 5, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT cota_mm AS \"Cota\" FROM calidad ORDER BY time DESC LIMIT 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "lengthmm", "decimals": 3, "min": 24.7, "max": 25.3,
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "green", "value": 24.9 },
+            { "color": "red", "value": 25.1 } ] }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdMarkers": true, "showThresholdLabels": false, "minVizHeight": 75, "minVizWidth": 75, "sizing": "auto"
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Rendimiento",
+      "description": "Porcentaje de piezas OK en el intervalo de tiempo seleccionado.",
+      "gridPos": { "x": 14, "y": 0, "w": 4, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT $__timeGroupAlias(time, '1m'), 100.0 * avg(resultado) AS \"% OK\"\nFROM calidad WHERE $__timeFilter(time)\nGROUP BY 1 ORDER BY 1" },
+        { "refId": "B", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT 100.0 * avg(resultado) AS \"Total\" FROM calidad WHERE $__timeFilter(time)" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent", "decimals": 1, "min": 0, "max": 100,
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "red", "value": null },
+            { "color": "orange", "value": 70 },
+            { "color": "green", "value": 85 } ] }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "/^Total$/", "values": false },
+        "colorMode": "value", "graphMode": "area", "justifyMode": "center",
+        "textMode": "value", "orientation": "auto", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Piezas inspeccionadas",
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT count(*) FILTER (WHERE resultado = 1) AS \"OK\",\n       count(*) FILTER (WHERE resultado = 0) AS \"NOT OK\"\nFROM calidad WHERE $__timeFilter(time)" }
+      ],
+      "fieldConfig": {
+        "defaults": { "decimals": 0, "color": { "mode": "fixed", "fixedColor": "text" } },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "OK" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } } ] },
+          { "matcher": { "id": "byName", "options": "NOT OK" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } } ] }
+        ]
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value", "graphMode": "none", "justifyMode": "center",
+        "textMode": "value_and_name", "orientation": "vertical", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 6,
+      "type": "marcusolsson-dynamictext-panel",
+      "title": "Imagen de la última pieza",
+      "gridPos": { "x": 0, "y": 5, "w": 9, "h": 12 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT 'data:image/png;base64,' || encode(imagen, 'base64') AS img,\n       pieza, to_char(cota_mm, 'FM90.000') AS cota, resultado = 1 AS ok\nFROM calidad ORDER BY time DESC LIMIT 1" }
+      ],
+      "options": {
+        "renderMode": "everyRow",
+        "editor": { "format": "auto", "language": "html" },
+        "editors": [],
+        "wrap": false,
+        "contentPartials": [],
+        "defaultContent": "<div style=\"text-align:center;padding:40px;opacity:.6\">Esperando la primera pieza…</div>",
+        "content": "<div class=\"qc-img\">\n  <img src=\"{{img}}\" alt=\"Pieza {{pieza}}\" />\n  <div class=\"qc-cap\">\n    <span>Pieza <b>#{{pieza}}</b></span>\n    <span>{{cota}} mm</span>\n    {{#if ok}}<span class=\"qc-badge ok\">OK</span>{{else}}<span class=\"qc-badge nok\">NOT OK</span>{{/if}}\n  </div>\n</div>",
+        "styles": ".qc-img { display: flex; flex-direction: column; align-items: center; gap: 10px; height: 100%; }\n.qc-img img { width: 100%; max-height: calc(100% - 44px); object-fit: contain; border-radius: 8px; }\n.qc-cap { display: flex; gap: 18px; align-items: center; font-size: 1.1em; }\n.qc-badge { padding: 2px 12px; border-radius: 6px; color: #fff; font-weight: 700; }\n.qc-badge.ok { background: #2e7d32; }\n.qc-badge.nok { background: #c62828; }",
+        "helpers": "",
+        "afterRender": ""
+      }
+    },
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Histórico de cota",
+      "description": "Banda verde: tolerancia 25,00 ± 0,10 mm.",
+      "gridPos": { "x": 9, "y": 5, "w": 15, "h": 12 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT time, cota_mm AS \"Cota\" FROM calidad WHERE $__timeFilter(time) ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "lengthmm", "decimals": 3, "min": 24.6, "max": 25.4,
+          "color": { "mode": "fixed", "fixedColor": "#5794F2" },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "transparent", "value": null },
+            { "color": "rgba(86, 166, 75, 0.15)", "value": 24.9 },
+            { "color": "transparent", "value": 25.1 } ] },
+          "custom": {
+            "drawStyle": "line", "lineInterpolation": "linear", "lineWidth": 2,
+            "fillOpacity": 0, "showPoints": "always", "pointSize": 5, "spanNulls": false,
+            "axisPlacement": "auto", "axisLabel": "", "scaleDistribution": { "type": "linear" },
+            "thresholdsStyle": { "mode": "area" }
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "showLegend": false, "displayMode": "list", "placement": "bottom", "calcs": [] },
+        "tooltip": { "mode": "single", "sort": "none" }
+      }
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Piezas por minuto",
+      "gridPos": { "x": 0, "y": 17, "w": 12, "h": 8 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT $__timeGroupAlias(time, '1m'),\n       count(*) FILTER (WHERE resultado = 1) AS \"OK\",\n       count(*) FILTER (WHERE resultado = 0) AS \"NOT OK\"\nFROM calidad WHERE $__timeFilter(time)\nGROUP BY 1 ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0, "min": 0,
+          "custom": {
+            "drawStyle": "bars", "barAlignment": 0, "barWidthFactor": 0.8, "lineWidth": 1,
+            "fillOpacity": 80, "showPoints": "never", "stacking": { "mode": "normal", "group": "A" }
+          }
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "OK" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } } ] },
+          { "matcher": { "id": "byName", "options": "NOT OK" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "red" } } ] }
+        ]
+      },
+      "options": {
+        "legend": { "showLegend": true, "displayMode": "list", "placement": "bottom", "calcs": ["sum"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      }
+    },
+    {
+      "id": 9,
+      "type": "histogram",
+      "title": "Distribución de cota",
+      "gridPos": { "x": 12, "y": 17, "w": 12, "h": 8 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT cota_mm AS \"Cota\" FROM calidad WHERE $__timeFilter(time)" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "lengthmm",
+          "color": { "mode": "fixed", "fixedColor": "#8AB8FF" },
+          "custom": { "fillOpacity": 70, "lineWidth": 1, "gradientMode": "opacity" }
+        },
+        "overrides": []
+      },
+      "options": {
+        "bucketSize": 0.02, "bucketOffset": 0, "combine": false,
+        "legend": { "showLegend": false, "displayMode": "list", "placement": "bottom", "calcs": [] }
+      }
+    },
+    {
+      "id": 10,
+      "type": "state-timeline",
+      "title": "Resultado por pieza",
+      "gridPos": { "x": 0, "y": 25, "w": 24, "h": 4 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT time, resultado AS \"Resultado\" FROM calidad WHERE $__timeFilter(time) ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": {
+              "1": { "text": "OK", "color": "green", "index": 0 },
+              "0": { "text": "NOT OK", "color": "red", "index": 1 } } }
+          ],
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "red", "value": null }, { "color": "green", "value": 1 } ] },
+          "custom": { "fillOpacity": 85, "lineWidth": 0 }
+        },
+        "overrides": []
+      },
+      "options": {
+        "mergeValues": false, "showValue": "never", "alignValue": "left", "rowHeight": 0.85,
+        "legend": { "showLegend": false, "displayMode": "list", "placement": "bottom" },
+        "tooltip": { "mode": "single", "sort": "none" }
+      }
+    },
+    {
+      "id": 11,
+      "type": "table",
+      "title": "Últimas piezas",
+      "gridPos": { "x": 0, "y": 29, "w": 24, "h": 14 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT time AS \"Hora\", pieza AS \"Pieza\", cota_mm AS \"Cota\", resultado AS \"Resultado\",\n       'data:image/png;base64,' || encode(imagen, 'base64') AS \"Imagen\"\nFROM calidad ORDER BY time DESC LIMIT 12" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "align": "center", "cellOptions": { "type": "auto" }, "inspect": false }
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Hora" }, "properties": [
+            { "id": "unit", "value": "dateTimeAsLocal" }, { "id": "custom.width", "value": 190 } ] },
+          { "matcher": { "id": "byName", "options": "Pieza" }, "properties": [
+            { "id": "decimals", "value": 0 }, { "id": "custom.width", "value": 110 } ] },
+          { "matcher": { "id": "byName", "options": "Cota" }, "properties": [
+            { "id": "unit", "value": "lengthmm" }, { "id": "decimals", "value": 3 },
+            { "id": "custom.width", "value": 140 },
+            { "id": "thresholds", "value": { "mode": "absolute", "steps": [
+              { "color": "red", "value": null }, { "color": "green", "value": 24.9 }, { "color": "red", "value": 25.1 } ] } },
+            { "id": "custom.cellOptions", "value": { "type": "color-text" } } ] },
+          { "matcher": { "id": "byName", "options": "Resultado" }, "properties": [
+            { "id": "mappings", "value": [ { "type": "value", "options": {
+              "1": { "text": "OK", "color": "green", "index": 0 },
+              "0": { "text": "NOT OK", "color": "red", "index": 1 } } } ] },
+            { "id": "custom.cellOptions", "value": { "type": "color-background", "mode": "basic" } },
+            { "id": "custom.width", "value": 140 } ] },
+          { "matcher": { "id": "byName", "options": "Imagen" }, "properties": [
+            { "id": "custom.cellOptions", "value": { "type": "image" } } ] }
+        ]
+      },
+      "options": {
+        "showHeader": true, "cellHeight": "lg",
+        "footer": { "show": false, "reducer": ["sum"], "countRows": false, "fields": "" }
+      }
+    }
+  ]
+}

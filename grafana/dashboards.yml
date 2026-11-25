@@ -1,0 +1,15 @@
+apiVersion: 1
+
+# Dashboards loaded from grafana/dashboards/ at startup (and re-read every 30 s).
+# "Control de calidad" is also the home dashboard (grafana.ini [dashboards] default_home_dashboard_path).
+providers:
+  - name: imh
+    orgId: 1
+    folder: IMH
+    folderUid: imh
+    type: file
+    disableDeletion: true
+    allowUiUpdates: false
+    updateIntervalSeconds: 30
+    options:
+      path: /etc/grafana/provisioning/dashboards/imh

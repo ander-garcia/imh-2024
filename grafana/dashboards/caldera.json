@@ -1,0 +1,193 @@
+{
+  "uid": "imh-caldera",
+  "title": "Caldera",
+  "description": "Caldera simulada por OPC PLC (Boiler #1), leída por Node-RED y guardada en in4pl.boiler. Valores tal como los publica el simulador.",
+  "tags": ["imh", "caldera"],
+  "timezone": "browser",
+  "editable": true,
+  "graphTooltip": 1,
+  "refresh": "5s",
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": { "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"] },
+  "schemaVersion": 41,
+  "version": 1,
+  "links": [
+    { "title": "Dashboards IMH", "type": "dashboards", "tags": ["imh"], "asDropdown": false, "includeVars": false, "keepTime": true, "icon": "external link", "targetBlank": false }
+  ],
+  "annotations": { "list": [] },
+  "templating": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Temperatura superior",
+      "gridPos": { "x": 0, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT time, NULLIF(top, -1) AS \"Superior\" FROM boiler WHERE $__timeFilter(time) ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": { "decimals": 0, "color": { "mode": "fixed", "fixedColor": "orange" }, "noValue": "—" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value", "graphMode": "area", "justifyMode": "center",
+        "textMode": "value", "orientation": "auto", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Temperatura inferior",
+      "gridPos": { "x": 6, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT time, NULLIF(bottom, -1) AS \"Inferior\" FROM boiler WHERE $__timeFilter(time) ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": { "decimals": 0, "color": { "mode": "fixed", "fixedColor": "yellow" }, "noValue": "—" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value", "graphMode": "area", "justifyMode": "center",
+        "textMode": "value", "orientation": "auto", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Presión",
+      "gridPos": { "x": 12, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT time, NULLIF(pressure, -1) AS \"Presión\" FROM boiler WHERE $__timeFilter(time) ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": { "decimals": 0, "color": { "mode": "fixed", "fixedColor": "purple" }, "noValue": "—" },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "value", "graphMode": "area", "justifyMode": "center",
+        "textMode": "value", "orientation": "auto", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Calentador",
+      "gridPos": { "x": 18, "y": 0, "w": 6, "h": 5 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "table", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT \"heaterState\" FROM boiler ORDER BY time DESC LIMIT 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": {
+              "1": { "text": "ENCENDIDO", "color": "green", "index": 0 },
+              "0": { "text": "APAGADO", "color": "#8e8e8e", "index": 1 } } }
+          ],
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "#8e8e8e", "value": null }, { "color": "green", "value": 1 } ] },
+          "noValue": "Sin datos"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "colorMode": "background_solid", "graphMode": "none", "justifyMode": "center",
+        "textMode": "value", "orientation": "auto", "wideLayout": true, "showPercentChange": false
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Temperaturas",
+      "gridPos": { "x": 0, "y": 5, "w": 12, "h": 11 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT $__timeGroupAlias(time, $__interval),\n       avg(NULLIF(top, -1))    AS \"Superior\",\n       avg(NULLIF(bottom, -1)) AS \"Inferior\"\nFROM boiler WHERE $__timeFilter(time)\nGROUP BY 1 ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "custom": {
+            "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2,
+            "fillOpacity": 12, "gradientMode": "opacity", "showPoints": "never", "spanNulls": false
+          }
+        },
+        "overrides": [
+          { "matcher": { "id": "byName", "options": "Superior" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } } ] },
+          { "matcher": { "id": "byName", "options": "Inferior" }, "properties": [ { "id": "color", "value": { "mode": "fixed", "fixedColor": "yellow" } }, { "id": "custom.lineStyle", "value": { "fill": "dash", "dash": [10, 10] } } ] }
+        ]
+      },
+      "options": {
+        "legend": { "showLegend": true, "displayMode": "table", "placement": "bottom", "calcs": ["lastNotNull", "min", "max"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Presión",
+      "gridPos": { "x": 12, "y": 5, "w": 12, "h": 11 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT $__timeGroupAlias(time, $__interval),\n       avg(NULLIF(pressure, -1)) AS \"Presión\"\nFROM boiler WHERE $__timeFilter(time)\nGROUP BY 1 ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "color": { "mode": "fixed", "fixedColor": "purple" },
+          "custom": {
+            "drawStyle": "line", "lineInterpolation": "smooth", "lineWidth": 2,
+            "fillOpacity": 12, "gradientMode": "opacity", "showPoints": "never", "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": { "showLegend": true, "displayMode": "table", "placement": "bottom", "calcs": ["lastNotNull", "min", "max"] },
+        "tooltip": { "mode": "multi", "sort": "none" }
+      }
+    },
+    {
+      "id": 7,
+      "type": "state-timeline",
+      "title": "Estado del calentador",
+      "gridPos": { "x": 0, "y": 16, "w": 24, "h": 4 },
+      "datasource": { "type": "grafana-postgresql-datasource", "uid": "timescale" },
+      "targets": [
+        { "refId": "A", "format": "time_series", "rawQuery": true, "editorMode": "code",
+          "rawSql": "SELECT $__timeGroupAlias(time, $__interval), max(\"heaterState\") AS \"Calentador\"\nFROM boiler WHERE $__timeFilter(time)\nGROUP BY 1 ORDER BY 1" }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": {
+              "1": { "text": "Encendido", "color": "green", "index": 0 },
+              "0": { "text": "Apagado", "color": "#8e8e8e", "index": 1 } } }
+          ],
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "#8e8e8e", "value": null }, { "color": "green", "value": 1 } ] },
+          "custom": { "fillOpacity": 80, "lineWidth": 0 }
+        },
+        "overrides": []
+      },
+      "options": {
+        "mergeValues": true, "showValue": "never", "alignValue": "center", "rowHeight": 0.85,
+        "legend": { "showLegend": false, "displayMode": "list", "placement": "bottom" },
+        "tooltip": { "mode": "single", "sort": "none" }
+      }
+    }
+  ]
+}

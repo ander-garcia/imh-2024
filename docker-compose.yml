@@ -68,6 +68,9 @@ services:
     volumes:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
+      # Provisioned dashboards (folder "IMH"); "Control de calidad" is the home dashboard
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards/imh
       - grafana-storage:/var/lib/grafana
     ports:
       - 3000:3000
@@ -86,6 +89,8 @@ services:
       # Bundled plugins (e.g. elasticsearch) are not writable by the grafana user in the 13.x image,
       # so auto-updating them fails at startup; keep the bundled versions instead.
       - GF_PLUGINS_PREINSTALL_AUTO_UPDATE=false
+      # Business Text panel: shows the latest piece image (PNG from the calidad table) in the quality dashboard
+      - GF_PLUGINS_PREINSTALL_SYNC=marcusolsson-dynamictext-panel@6.3.1
       - GF_SKIP_VERIFY=true
     restart: unless-stopped
     depends_on:
@@ -102,6 +107,8 @@ services:
     ports:
       - "1880:1880"
       - "53880:53880"
+    # A PostgreSQL connection dropped by a DB restart can crash Node-RED (uncaught pg error); come back up.
+    restart: unless-stopped
     networks:
       - imh_net
     volumes:

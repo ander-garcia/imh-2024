@@ -17,6 +17,11 @@ First run / after upgrading:
   The old `timescale-data` (PostgreSQL 14) volume is not reused; the init scripts recreate the schema on first start.
   Export any data you need from the old volume with `pg_dump` before removing it.
 
+Grafana: open http://localhost:3000 (admin / `GF_SECURITY_ADMIN_PASSWORD`). The home page is the "Control de calidad"
+dashboard; "Caldera" is linked from it. Both are provisioned from `grafana/dashboards/` (folder "IMH", read-only in
+the UI: edit the JSON files, Grafana reloads them within 30 s). The latest-piece image uses the Business Text panel
+plugin, installed at startup (`GF_PLUGINS_PREINSTALL_SYNC`, needs Internet on first start).
+
 Python examples (`python/`) require Python >= 3.12: `pip install -r python/requirements.txt`.
 
 MQTT web client: open http://localhost:8086 (MQTTX Web). Click "New Connection": it is prefilled with
