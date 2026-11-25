@@ -24,15 +24,7 @@
         "env": []
     },
     {
-        "id": "6412a3edf88a23b2",
-        "type": "tab",
-        "label": "Flow 1",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "23c221bc2d2419f0",
+        "id": "8d23c2c5eab6ccba",
         "type": "tab",
         "label": "Control de calidad OPC UA",
         "disabled": false,
@@ -226,30 +218,30 @@
         "type": "ui-page",
         "name": "Control de calidad",
         "ui": "ed111dbbab6f6610",
-        "path": "/calidad",
+        "path": "/calidad1",
         "icon": "check-decagram",
         "layout": "grid",
         "theme": "a383aa01253039ae",
         "breakpoints": [
             {
                 "name": "Default",
-                "px": 0,
-                "cols": 3
+                "px": "0",
+                "cols": "3"
             },
             {
                 "name": "Tablet",
-                "px": 576,
-                "cols": 6
+                "px": "576",
+                "cols": "6"
             },
             {
                 "name": "Small Desktop",
-                "px": 768,
-                "cols": 9
+                "px": "768",
+                "cols": "9"
             },
             {
                 "name": "Desktop",
-                "px": 1024,
-                "cols": 12
+                "px": "1024",
+                "cols": "12"
             }
         ],
         "tabs": [],
@@ -289,6 +281,112 @@
         "groupType": "default",
         "keepLoaded": false,
         "tab": ""
+    },
+    {
+        "id": "3675e40cea24a0f4",
+        "type": "OpcUa-Endpoint",
+        "endpoint": "opc.tcp://opc-calidad:4840/calidad",
+        "secpol": "None",
+        "secmode": "None",
+        "none": true,
+        "login": false,
+        "usercert": false,
+        "usercertificate": "",
+        "userprivatekey": ""
+    },
+    {
+        "id": "96ed66d5a740dd4a",
+        "type": "ui-page",
+        "name": "Control de calidad",
+        "ui": "ed111dbbab6f6610",
+        "path": "/calidad",
+        "icon": "check-decagram",
+        "layout": "grid",
+        "theme": "a383aa01253039ae",
+        "breakpoints": [
+            {
+                "name": "Default",
+                "px": 0,
+                "cols": 3
+            },
+            {
+                "name": "Tablet",
+                "px": 576,
+                "cols": 6
+            },
+            {
+                "name": "Small Desktop",
+                "px": 768,
+                "cols": 9
+            },
+            {
+                "name": "Desktop",
+                "px": 1024,
+                "cols": 12
+            }
+        ],
+        "tabs": [],
+        "order": 3,
+        "className": "",
+        "visible": "true",
+        "disabled": "false"
+    },
+    {
+        "id": "8880ff718e2f545a",
+        "type": "ui-group",
+        "name": "Imagen de la pieza",
+        "page": "96ed66d5a740dd4a",
+        "width": "6",
+        "height": "1",
+        "order": 1,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default",
+        "keepLoaded": false,
+        "tab": ""
+    },
+    {
+        "id": "afb84920ca5ea72f",
+        "type": "ui-group",
+        "name": "Medida y resultado",
+        "page": "96ed66d5a740dd4a",
+        "width": "6",
+        "height": "1",
+        "order": 2,
+        "showTitle": true,
+        "className": "",
+        "visible": "true",
+        "disabled": "false",
+        "groupType": "default",
+        "keepLoaded": false,
+        "tab": ""
+    },
+    {
+        "id": "43d03b6d0d1dca03",
+        "type": "postgreSQLConfig",
+        "name": "in4pl (calidad)",
+        "host": "timescaledb",
+        "hostFieldType": "str",
+        "port": "5432",
+        "portFieldType": "num",
+        "database": "in4pl",
+        "databaseFieldType": "str",
+        "ssl": "false",
+        "sslFieldType": "bool",
+        "applicationName": "node-red-calidad",
+        "applicationNameType": "str",
+        "max": "10",
+        "maxFieldType": "num",
+        "idle": "1000",
+        "idleFieldType": "num",
+        "connectionTimeout": "10000",
+        "connectionTimeoutFieldType": "num",
+        "userFieldType": "env",
+        "userEnv": "CALIDAD_DB_USER",
+        "passwordFieldType": "env",
+        "passwordEnv": "CALIDAD_DB_PASSWORD"
     },
     {
         "id": "1bb3b998da0f4fab",
@@ -842,9 +940,9 @@
         ]
     },
     {
-        "id": "ba5b621c98bba341",
+        "id": "1738f294907b2f06",
         "type": "inject",
-        "z": "23c221bc2d2419f0",
+        "z": "8d23c2c5eab6ccba",
         "name": "Suscribir al arrancar",
         "props": [
             {
@@ -862,17 +960,17 @@
         "y": 200,
         "wires": [
             [
-                "255635571003db5f",
-                "c6c6df659ddaf580",
-                "f9506ec11906d4a7",
-                "a648c4f50169d4c0"
+                "2f60e6366d632807",
+                "c6f18dcbd63950cd",
+                "e9936262f206df84",
+                "13b3b9f009fb614e"
             ]
         ]
     },
     {
-        "id": "255635571003db5f",
+        "id": "2f60e6366d632807",
         "type": "OpcUa-Item",
-        "z": "23c221bc2d2419f0",
+        "z": "8d23c2c5eab6ccba",
         "item": "ns=2;s=Imagen",
         "datatype": "ByteString",
         "value": "",
@@ -881,14 +979,14 @@
         "y": 80,
         "wires": [
             [
-                "a39d0ee21799cf16"
+                "6a49315c3634e3b9"
             ]
         ]
     },
     {
-        "id": "c6c6df659ddaf580",
+        "id": "c6f18dcbd63950cd",
         "type": "OpcUa-Item",
-        "z": "23c221bc2d2419f0",
+        "z": "8d23c2c5eab6ccba",
         "item": "ns=2;s=Cota_mm",
         "datatype": "Double",
         "value": "",
@@ -897,14 +995,14 @@
         "y": 140,
         "wires": [
             [
-                "a39d0ee21799cf16"
+                "6a49315c3634e3b9"
             ]
         ]
     },
     {
-        "id": "f9506ec11906d4a7",
+        "id": "e9936262f206df84",
         "type": "OpcUa-Item",
-        "z": "23c221bc2d2419f0",
+        "z": "8d23c2c5eab6ccba",
         "item": "ns=2;s=Resultado",
         "datatype": "Int16",
         "value": "",
@@ -913,14 +1011,14 @@
         "y": 200,
         "wires": [
             [
-                "a39d0ee21799cf16"
+                "6a49315c3634e3b9"
             ]
         ]
     },
     {
-        "id": "a648c4f50169d4c0",
+        "id": "13b3b9f009fb614e",
         "type": "OpcUa-Item",
-        "z": "23c221bc2d2419f0",
+        "z": "8d23c2c5eab6ccba",
         "item": "ns=2;s=Contador",
         "datatype": "UInt32",
         "value": "",
@@ -929,15 +1027,15 @@
         "y": 260,
         "wires": [
             [
-                "a39d0ee21799cf16"
+                "6a49315c3634e3b9"
             ]
         ]
     },
     {
-        "id": "a39d0ee21799cf16",
+        "id": "6a49315c3634e3b9",
         "type": "OpcUa-Client",
-        "z": "23c221bc2d2419f0",
-        "endpoint": "091d0eb4d25e46fd",
+        "z": "8d23c2c5eab6ccba",
+        "endpoint": "3675e40cea24a0f4",
         "action": "subscribe",
         "deadbandtype": "a",
         "deadbandvalue": "0",
@@ -960,18 +1058,55 @@
         "y": 200,
         "wires": [
             [
-                "8ff517dcd8bb575c"
+                "1e5ec057542a3e41",
+                "cfdc61fbb12d2b7f"
             ],
             [],
             []
         ]
     },
     {
-        "id": "8ff517dcd8bb575c",
+        "id": "cfdc61fbb12d2b7f",
         "type": "function",
-        "z": "23c221bc2d2419f0",
+        "z": "8d23c2c5eab6ccba",
+        "name": "Agrupar pieza",
+        "func": "// Junta los 4 valores OPC UA de una pieza en una fila de la tabla calidad.\n// OPC UA solo notifica cambios: Cota_mm y Resultado pueden no llegar si repiten valor,\n// así que se guarda su último valor. Contador e Imagen cambian en cada pieza: cuando han\n// llegado los dos, se espera 300 ms (por si cota/resultado vienen en el mismo lote) y se inserta.\nconst t = msg.topic || \"\";\nconst s = context.get(\"s\") || { nuevoCnt: false, nuevaImg: false };\nif (t.endsWith(\"Cota_mm\")) s.cota = Number(msg.payload);\nelse if (t.endsWith(\"Resultado\")) s.resultado = Number(msg.payload);\nelse if (t.endsWith(\"Contador\")) { s.pieza = Number(msg.payload); s.nuevoCnt = true; }\nelse if (t.endsWith(\"Imagen\")) {\n    const v = msg.payload;\n    s.imagen = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    s.nuevaImg = true;\n}\nelse return null;\ncontext.set(\"s\", s);\n\nif (s.nuevoCnt && s.nuevaImg) {\n    clearTimeout(context.get(\"timer\"));\n    context.set(\"timer\", setTimeout(() => {\n        s.nuevoCnt = false;\n        s.nuevaImg = false;\n        node.send({\n            topic: \"calidad\",\n            payload: { pieza: s.pieza, cota_mm: s.cota, resultado: s.resultado },\n            params: [new Date(), s.pieza, s.cota, s.resultado, s.imagen]\n        });\n        node.status({ fill: s.resultado === 1 ? \"green\" : \"red\", shape: \"dot\", text: `pieza ${s.pieza}` });\n    }, 300));\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "clearTimeout(context.get(\"timer\"));",
+        "libs": [],
+        "x": 770,
+        "y": 400,
+        "wires": [
+            [
+                "5d65e31415b6a839"
+            ]
+        ]
+    },
+    {
+        "id": "5d65e31415b6a839",
+        "type": "postgresql",
+        "z": "8d23c2c5eab6ccba",
+        "name": "Guardar en tabla calidad",
+        "query": "INSERT INTO calidad (\"time\", pieza, cota_mm, resultado, imagen)\nVALUES ($1, $2, $3, $4, $5);",
+        "postgreSQLConfig": "43d03b6d0d1dca03",
+        "split": false,
+        "rowsPerMsg": 1,
+        "outputs": 1,
+        "x": 1010,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1e5ec057542a3e41",
+        "type": "function",
+        "z": "8d23c2c5eab6ccba",
         "name": "Enrutar por nodo",
-        "func": "// Salidas: 1 imagen, 2 cota numérica (gauge + gráfico), 3 cota como texto, 4 resultado, 5 contador\nconst t = msg.topic || \"\";\nconst v = msg.payload;\nif (t.endsWith(\"Imagen\")) {\n    const b = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    return [{ payload: \"data:image/png;base64,\" + b.toString(\"base64\") }, null, null, null, null];\n}\nif (t.endsWith(\"Cota_mm\")) {\n    const cota = Number(v);\n    return [null, { payload: Math.round(cota * 1000) / 1000, topic: \"Cota\" }, { payload: cota.toFixed(3) }, null, null];\n}\nif (t.endsWith(\"Resultado\")) return [null, null, null, { payload: Number(v) }, null];\nif (t.endsWith(\"Contador\"))  return [null, null, null, null, { payload: Number(v) }];\nreturn null;",
+        "func": "// Salidas: 1 imagen, 2 cota numérica (gauge + gráfico), 3 cota como texto, 4 resultado, 5 contador\nconst t = msg.topic || \"\";\nconst v = msg.payload;\nif (t.endsWith(\"Imagen\")) {\n    const b = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    return [{ payload: \"data:image/png;base64,\" + b.toString(\"base64\") }, null, null, null, null];\n}\nif (t.endsWith(\"Cota_mm\")) {\n    const cota = Number(v);\n    return [null, { payload: Math.round(cota * 1000) / 1000, topic: \"Cota\" }, { payload: cota.toFixed(3) + \" mm\" }, null, null];\n}\nif (t.endsWith(\"Resultado\")) return [null, null, null, { payload: Number(v) }, null];\nif (t.endsWith(\"Contador\"))  return [null, null, null, null, { payload: Number(v) }];\nreturn null;",
         "outputs": 5,
         "timeout": 0,
         "noerr": 0,
@@ -982,34 +1117,34 @@
         "y": 200,
         "wires": [
             [
-                "ae619e12b080a39f"
+                "41eecd5a604ae75a"
             ],
             [
-                "9cf3e4bd3df74191",
-                "57664b2e59b45e74"
+                "c0df0ca85788c17d",
+                "f29c9d96bb3d84bb"
             ],
             [
-                "66f30842b03e0d53"
+                "57c5470ec4d91f6e"
             ],
             [
-                "9fb75586422fe34e"
+                "775c1d0dad3f6849"
             ],
             [
-                "bcdc32908f4be891"
+                "249c3d53dc9b6f40"
             ]
         ]
     },
     {
-        "id": "ae619e12b080a39f",
+        "id": "41eecd5a604ae75a",
         "type": "ui-template",
-        "z": "23c221bc2d2419f0",
-        "group": "97b344ab3d8613dd",
+        "z": "8d23c2c5eab6ccba",
+        "group": "8880ff718e2f545a",
         "page": "",
         "ui": "",
         "name": "Imagen",
         "order": 1,
         "width": "6",
-        "height": "6",
+        "height": "0",
         "head": "",
         "format": "<template>\n    <img v-if=\"msg?.payload\" :src=\"msg.payload\" alt=\"Imagen de la pieza\" style=\"width: 100%; border-radius: 8px;\">\n    <div v-else style=\"text-align: center; padding: 24px; color: #888;\">Esperando imagen…</div>\n</template>",
         "storeOutMessages": true,
@@ -1024,11 +1159,11 @@
         ]
     },
     {
-        "id": "9cf3e4bd3df74191",
+        "id": "c0df0ca85788c17d",
         "type": "ui-gauge",
-        "z": "23c221bc2d2419f0",
+        "z": "8d23c2c5eab6ccba",
         "name": "Cota",
-        "group": "9484a7a4a4cf1a4d",
+        "group": "afb84920ca5ea72f",
         "order": 2,
         "value": "payload",
         "valueType": "msg",
@@ -1072,10 +1207,10 @@
         ]
     },
     {
-        "id": "57664b2e59b45e74",
+        "id": "f29c9d96bb3d84bb",
         "type": "ui-chart",
-        "z": "23c221bc2d2419f0",
-        "group": "9484a7a4a4cf1a4d",
+        "z": "8d23c2c5eab6ccba",
+        "group": "afb84920ca5ea72f",
         "name": "Histórico cota",
         "label": "Histórico de cota (mm)",
         "order": 5,
@@ -1134,16 +1269,16 @@
         ]
     },
     {
-        "id": "66f30842b03e0d53",
+        "id": "57c5470ec4d91f6e",
         "type": "ui-text",
-        "z": "23c221bc2d2419f0",
-        "group": "9484a7a4a4cf1a4d",
+        "z": "8d23c2c5eab6ccba",
+        "group": "afb84920ca5ea72f",
         "order": 3,
         "width": "6",
         "height": "1",
         "name": "Cota numérica",
         "label": "Cota medida",
-        "format": "{{msg.payload}} mm",
+        "format": "{{msg.payload}}",
         "layout": "row-spread",
         "style": false,
         "font": "",
@@ -1158,10 +1293,10 @@
         "wires": []
     },
     {
-        "id": "9fb75586422fe34e",
+        "id": "775c1d0dad3f6849",
         "type": "ui-template",
-        "z": "23c221bc2d2419f0",
-        "group": "9484a7a4a4cf1a4d",
+        "z": "8d23c2c5eab6ccba",
+        "group": "afb84920ca5ea72f",
         "page": "",
         "ui": "",
         "name": "Resultado OK / NOT OK",
@@ -1182,10 +1317,10 @@
         ]
     },
     {
-        "id": "bcdc32908f4be891",
+        "id": "249c3d53dc9b6f40",
         "type": "ui-text",
-        "z": "23c221bc2d2419f0",
-        "group": "9484a7a4a4cf1a4d",
+        "z": "8d23c2c5eab6ccba",
+        "group": "afb84920ca5ea72f",
         "order": 4,
         "width": "6",
         "height": "1",

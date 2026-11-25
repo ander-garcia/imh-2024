@@ -220,8 +220,70 @@
     "y": 200,
     "wires": [
       [
-        "route"
+        "route",
+        "agrupar"
       ]
+    ]
+  },
+  {
+    "id": "pg_calidad",
+    "type": "postgreSQLConfig",
+    "name": "in4pl (calidad)",
+    "host": "timescaledb",
+    "hostFieldType": "str",
+    "port": "5432",
+    "portFieldType": "num",
+    "database": "in4pl",
+    "databaseFieldType": "str",
+    "ssl": "false",
+    "sslFieldType": "bool",
+    "applicationName": "node-red-calidad",
+    "applicationNameType": "str",
+    "max": "10",
+    "maxFieldType": "num",
+    "idle": "1000",
+    "idleFieldType": "num",
+    "connectionTimeout": "10000",
+    "connectionTimeoutFieldType": "num",
+    "userFieldType": "env",
+    "userEnv": "CALIDAD_DB_USER",
+    "passwordFieldType": "env",
+    "passwordEnv": "CALIDAD_DB_PASSWORD"
+  },
+  {
+    "id": "agrupar",
+    "type": "function",
+    "z": "tab_qc",
+    "name": "Agrupar pieza",
+    "func": "// Junta los 4 valores OPC UA de una pieza en una fila de la tabla calidad.\n// OPC UA solo notifica cambios: Cota_mm y Resultado pueden no llegar si repiten valor,\n// así que se guarda su último valor. Contador e Imagen cambian en cada pieza: cuando han\n// llegado los dos, se espera 300 ms (por si cota/resultado vienen en el mismo lote) y se inserta.\nconst t = msg.topic || \"\";\nconst s = context.get(\"s\") || { nuevoCnt: false, nuevaImg: false };\nif (t.endsWith(\"Cota_mm\")) s.cota = Number(msg.payload);\nelse if (t.endsWith(\"Resultado\")) s.resultado = Number(msg.payload);\nelse if (t.endsWith(\"Contador\")) { s.pieza = Number(msg.payload); s.nuevoCnt = true; }\nelse if (t.endsWith(\"Imagen\")) {\n    const v = msg.payload;\n    s.imagen = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    s.nuevaImg = true;\n}\nelse return null;\ncontext.set(\"s\", s);\n\nif (s.nuevoCnt && s.nuevaImg) {\n    clearTimeout(context.get(\"timer\"));\n    context.set(\"timer\", setTimeout(() => {\n        s.nuevoCnt = false;\n        s.nuevaImg = false;\n        node.send({\n            topic: \"calidad\",\n            payload: { pieza: s.pieza, cota_mm: s.cota, resultado: s.resultado },\n            params: [new Date(), s.pieza, s.cota, s.resultado, s.imagen]\n        });\n        node.status({ fill: s.resultado === 1 ? \"green\" : \"red\", shape: \"dot\", text: `pieza ${s.pieza}` });\n    }, 300));\n}\nreturn null;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "clearTimeout(context.get(\"timer\"));",
+    "libs": [],
+    "x": 770,
+    "y": 400,
+    "wires": [
+      [
+        "pg_insert"
+      ]
+    ]
+  },
+  {
+    "id": "pg_insert",
+    "type": "postgresql",
+    "z": "tab_qc",
+    "name": "Guardar en tabla calidad",
+    "query": "INSERT INTO calidad (\"time\", pieza, cota_mm, resultado, imagen)\nVALUES ($1, $2, $3, $4, $5);",
+    "postgreSQLConfig": "pg_calidad",
+    "split": false,
+    "rowsPerMsg": 1,
+    "outputs": 1,
+    "x": 1010,
+    "y": 400,
+    "wires": [
+      []
     ]
   },
   {
@@ -229,7 +291,7 @@
     "type": "function",
     "z": "tab_qc",
     "name": "Enrutar por nodo",
-    "func": "// Salidas: 1 imagen, 2 cota numérica (gauge + gráfico), 3 cota como texto, 4 resultado, 5 contador\nconst t = msg.topic || \"\";\nconst v = msg.payload;\nif (t.endsWith(\"Imagen\")) {\n    const b = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    return [{ payload: \"data:image/png;base64,\" + b.toString(\"base64\") }, null, null, null, null];\n}\nif (t.endsWith(\"Cota_mm\")) {\n    const cota = Number(v);\n    return [null, { payload: Math.round(cota * 1000) / 1000, topic: \"Cota\" }, { payload: cota.toFixed(3) }, null, null];\n}\nif (t.endsWith(\"Resultado\")) return [null, null, null, { payload: Number(v) }, null];\nif (t.endsWith(\"Contador\"))  return [null, null, null, null, { payload: Number(v) }];\nreturn null;",
+    "func": "// Salidas: 1 imagen, 2 cota numérica (gauge + gráfico), 3 cota como texto, 4 resultado, 5 contador\nconst t = msg.topic || \"\";\nconst v = msg.payload;\nif (t.endsWith(\"Imagen\")) {\n    const b = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    return [{ payload: \"data:image/png;base64,\" + b.toString(\"base64\") }, null, null, null, null];\n}\nif (t.endsWith(\"Cota_mm\")) {\n    const cota = Number(v);\n    return [null, { payload: Math.round(cota * 1000) / 1000, topic: \"Cota\" }, { payload: cota.toFixed(3) + \" mm\" }, null, null];\n}\nif (t.endsWith(\"Resultado\")) return [null, null, null, { payload: Number(v) }, null];\nif (t.endsWith(\"Contador\"))  return [null, null, null, null, { payload: Number(v) }];\nreturn null;",
     "outputs": 5,
     "timeout": 0,
     "noerr": 0,
@@ -267,7 +329,7 @@
     "name": "Imagen",
     "order": 1,
     "width": "6",
-    "height": "6",
+    "height": "0",
     "head": "",
     "format": "<template>\n    <img v-if=\"msg?.payload\" :src=\"msg.payload\" alt=\"Imagen de la pieza\" style=\"width: 100%; border-radius: 8px;\">\n    <div v-else style=\"text-align: center; padding: 24px; color: #888;\">Esperando imagen…</div>\n</template>",
     "storeOutMessages": true,
@@ -392,7 +454,7 @@
     "height": "1",
     "name": "Cota numérica",
     "label": "Cota medida",
-    "format": "{{msg.payload}} mm",
+    "format": "{{msg.payload}}",
     "layout": "row-spread",
     "style": false,
     "font": "",

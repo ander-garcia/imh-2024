@@ -43,6 +43,7 @@ services:
     volumes:
       - ./postgres/initdb001.sh:/docker-entrypoint-initdb.d/init001.sh
       - ./postgres/initdb002.sh:/docker-entrypoint-initdb.d/init002.sh
+      - ./postgres/initdb003.sh:/docker-entrypoint-initdb.d/init003.sh
       # PostgreSQL 18+ images keep PGDATA under /var/lib/postgresql/<major>/docker
       - timescale-data-pg18:/var/lib/postgresql
 
@@ -95,6 +96,9 @@ services:
     image: nodered/node-red:5.0.10
     environment:
       - TZ=Europe/Madrid
+      # Used by the PostgreSQL config of the quality-control flow (opc-calidad/flujo_nodered_calidad.json)
+      - CALIDAD_DB_USER=postgres
+      - CALIDAD_DB_PASSWORD=p4ssw0rd
     ports:
       - "1880:1880"
       - "53880:53880"
