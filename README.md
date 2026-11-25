@@ -38,12 +38,14 @@ inspection station. Every `PERIODO` seconds (default 2) it publishes, under the 
 `ns=2;s=Imagen` (PNG, ByteString), `ns=2;s=Cota_mm` (Double, nominal 25.00 ± 0.10 mm),
 `ns=2;s=Resultado` (Int16, 1 = OK, 0 = NOT OK) and `ns=2;s=Contador` (UInt32).
 Endpoint: `opc.tcp://opc-calidad:4840/calidad` from other containers (Node-RED, OPC UA explorer), or
-`opc.tcp://localhost:4840/calidad` from the host. `opc-calidad/flujo_nodered_calidad.json` is a Node-RED flow
+`opc.tcp://localhost:4840/calidad` from the host. `opc-calidad/flujo_nodered_calidad.json` holds two Node-RED flows
 (import it in Node-RED; uses the already installed `node-red-contrib-opcua`, `@flowfuse/node-red-dashboard` and
-`node-red-contrib-postgresql`) that:
-- shows the image, OK / NOT OK, gauge, counter and history chart on the Dashboard 2 page
-  http://localhost:1880/dashboard/calidad;
-- stores every inspected piece in the TimescaleDB table `in4pl.calidad` (`time`, `pieza`, `cota_mm`, `resultado`,
+`node-red-contrib-postgresql`; after importing, set the user/password of the two MQTT broker configs, e.g.
+`imh-client` and `imh-writer`):
+- "Calidad OPC UA → MQTT" subscribes to the OPC UA server, shows the image, OK / NOT OK, gauge, counter and history
+  chart on the Dashboard 2 page http://localhost:1880/dashboard/calidad, and publishes every inspected piece to the
+  MQTT topic `quality` as JSON (`time`, `pieza`, `cota_mm`, `resultado`, `imagen` = PNG in base64);
+- "Calidad MQTT → BD" subscribes to `quality` and stores every piece in the TimescaleDB table `in4pl.calidad` (`time`, `pieza`, `cota_mm`, `resultado`,
   `imagen` as PNG `bytea`), created by `postgres/initdb003.sh`. The DB user/password come from the
   `CALIDAD_DB_USER` / `CALIDAD_DB_PASSWORD` variables of the `node-red` service. About 10 kB per piece
   (~400 MB/day at the default 2 s period); a TimescaleDB retention policy keeps only the last day.

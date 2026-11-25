@@ -16,19 +16,18 @@
         "env": []
     },
     {
-        "id": "70a1e0ab1144cc06",
-        "type": "tab",
-        "label": "server",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "8d23c2c5eab6ccba",
         "type": "tab",
-        "label": "Control de calidad OPC UA",
+        "label": "Calidad OPC UA → MQTT",
         "disabled": false,
-        "info": "Lee el simulador OPC UA de control de calidad (servicio opc-calidad) y lo muestra en Dashboard 2 (@flowfuse/node-red-dashboard), página /dashboard/calidad."
+        "info": "Lee el simulador OPC UA de control de calidad (servicio opc-calidad), lo muestra en Dashboard 2 (@flowfuse/node-red-dashboard, página /dashboard/calidad) y publica cada pieza en MQTT, topic quality (JSON: time, pieza, cota_mm, resultado, imagen = PNG en base64). El flujo \"Calidad MQTT → BD\" la guarda en la tabla calidad."
+    },
+    {
+        "id": "12ffe4bad46dc3f4",
+        "type": "tab",
+        "label": "Calidad MQTT → BD",
+        "disabled": false,
+        "info": "Se suscribe al topic quality (publicado por el flujo \"Calidad OPC UA → MQTT\") y guarda cada pieza en la tabla calidad de TimescaleDB (in4pl)."
     },
     {
         "id": "ef0a1b42cde475be",
@@ -127,20 +126,6 @@
         }
     },
     {
-        "id": "02b6cf51aeb3d186",
-        "type": "ui_tab",
-        "name": "Home",
-        "icon": "dashboard",
-        "order": "1"
-    },
-    {
-        "id": "f0b0bf9836bb91ed",
-        "type": "ui_tab",
-        "name": "Home",
-        "icon": "dashboard",
-        "order": "1"
-    },
-    {
         "id": "f989edf84a666335",
         "type": "ui-page",
         "name": "boiler",
@@ -153,31 +138,6 @@
         "className": "",
         "visible": "true",
         "disabled": "false"
-    },
-    {
-        "id": "1c87d60af1cce389",
-        "type": "postgreSQLConfig",
-        "name": "",
-        "host": "timescaledb",
-        "hostFieldType": "str",
-        "port": "5432",
-        "portFieldType": "num",
-        "database": "postgres",
-        "databaseFieldType": "str",
-        "ssl": "false",
-        "sslFieldType": "bool",
-        "applicationName": "",
-        "applicationNameType": "str",
-        "max": "10",
-        "maxFieldType": "num",
-        "idle": "1000",
-        "idleFieldType": "num",
-        "connectionTimeout": "10000",
-        "connectionTimeoutFieldType": "num",
-        "userFieldType": "cred",
-        "userEnv": "",
-        "passwordFieldType": "cred",
-        "passwordEnv": ""
     },
     {
         "id": "6301ae3ad5f3f42b",
@@ -200,87 +160,6 @@
         "className": "",
         "visible": "true",
         "disabled": "false"
-    },
-    {
-        "id": "091d0eb4d25e46fd",
-        "type": "OpcUa-Endpoint",
-        "endpoint": "opc.tcp://opc-calidad:4840/calidad",
-        "secpol": "None",
-        "secmode": "None",
-        "none": true,
-        "login": false,
-        "usercert": false,
-        "usercertificate": "",
-        "userprivatekey": ""
-    },
-    {
-        "id": "801999f418a10574",
-        "type": "ui-page",
-        "name": "Control de calidad",
-        "ui": "ed111dbbab6f6610",
-        "path": "/calidad1",
-        "icon": "check-decagram",
-        "layout": "grid",
-        "theme": "a383aa01253039ae",
-        "breakpoints": [
-            {
-                "name": "Default",
-                "px": "0",
-                "cols": "3"
-            },
-            {
-                "name": "Tablet",
-                "px": "576",
-                "cols": "6"
-            },
-            {
-                "name": "Small Desktop",
-                "px": "768",
-                "cols": "9"
-            },
-            {
-                "name": "Desktop",
-                "px": "1024",
-                "cols": "12"
-            }
-        ],
-        "tabs": [],
-        "order": 2,
-        "className": "",
-        "visible": "true",
-        "disabled": "false"
-    },
-    {
-        "id": "97b344ab3d8613dd",
-        "type": "ui-group",
-        "name": "Imagen de la pieza",
-        "page": "801999f418a10574",
-        "width": "6",
-        "height": "1",
-        "order": 1,
-        "showTitle": true,
-        "className": "",
-        "visible": "true",
-        "disabled": "false",
-        "groupType": "default",
-        "keepLoaded": false,
-        "tab": ""
-    },
-    {
-        "id": "9484a7a4a4cf1a4d",
-        "type": "ui-group",
-        "name": "Medida y resultado",
-        "page": "801999f418a10574",
-        "width": "6",
-        "height": "1",
-        "order": 2,
-        "showTitle": true,
-        "className": "",
-        "visible": "true",
-        "disabled": "false",
-        "groupType": "default",
-        "keepLoaded": false,
-        "tab": ""
     },
     {
         "id": "3675e40cea24a0f4",
@@ -837,109 +716,6 @@
         "wires": []
     },
     {
-        "id": "6020a047bdd55a7d",
-        "type": "function",
-        "z": "70a1e0ab1144cc06",
-        "name": "function 1",
-        "func": "flow.set('isoOutput2', Math.random() + 2.0)\nflow.set('isoOutput3', Math.random() + 3.0)\nflow.set('isoOutput4', Math.random() + 4.0)\nflow.set('isoOutput5', Math.random() + 5.0)\nflow.set('isoOutput6', Math.random() + 6.0)\nflow.set('isoOutput7', Math.random() + 7.0)\nflow.set('isoOutput8', Math.random() + 8.0)\nmsg.payload = flow.get('isoOutput8')\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 280,
-        "y": 160,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "48038e91788f004a",
-        "type": "inject",
-        "z": "70a1e0ab1144cc06",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "10",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 110,
-        "y": 80,
-        "wires": [
-            [
-                "6020a047bdd55a7d",
-                "10f437c08ca9fe3c"
-            ]
-        ]
-    },
-    {
-        "id": "10f437c08ca9fe3c",
-        "type": "OpcUa-Server",
-        "z": "70a1e0ab1144cc06",
-        "port": "53880",
-        "name": "aaa",
-        "endpoint": "",
-        "nodesetDir": "",
-        "autoAcceptUnknownCertificate": true,
-        "registerToDiscovery": false,
-        "constructDefaultAddressSpace": true,
-        "allowAnonymous": true,
-        "endpointNone": true,
-        "endpointSign": true,
-        "endpointSignEncrypt": true,
-        "endpointBasic128Rsa15": true,
-        "endpointBasic256": true,
-        "endpointBasic256Sha256": true,
-        "maxNodesPerBrowse": 0,
-        "maxNodesPerHistoryReadData": 0,
-        "maxNodesPerHistoryReadEvents": 0,
-        "maxNodesPerHistoryUpdateData": 0,
-        "maxNodesPerRead": 0,
-        "maxNodesPerWrite": 0,
-        "maxNodesPerMethodCall": 0,
-        "maxNodesPerRegisterNodes": 0,
-        "maxNodesPerNodeManagement": 0,
-        "maxMonitoredItemsPerCall": 0,
-        "maxNodesPerHistoryUpdateEvents": 0,
-        "maxNodesPerTranslateBrowsePathsToNodeIds": 0,
-        "maxConnectionsPerEndpoint": 20,
-        "maxMessageSize": 4096,
-        "maxBufferSize": 4096,
-        "maxSessions": 20,
-        "x": 630,
-        "y": 340,
-        "wires": [
-            [
-                "c3e2dd546b7ef705"
-            ]
-        ]
-    },
-    {
-        "id": "c3e2dd546b7ef705",
-        "type": "OpcUa-Item",
-        "z": "70a1e0ab1144cc06",
-        "item": "ns=3;s=aa",
-        "datatype": "Float",
-        "value": "2",
-        "name": "aa",
-        "x": 650,
-        "y": 460,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "1738f294907b2f06",
         "type": "inject",
         "z": "8d23c2c5eab6ccba",
@@ -1070,7 +846,7 @@
         "type": "function",
         "z": "8d23c2c5eab6ccba",
         "name": "Agrupar pieza",
-        "func": "// Junta los 4 valores OPC UA de una pieza en una fila de la tabla calidad.\n// OPC UA solo notifica cambios: Cota_mm y Resultado pueden no llegar si repiten valor,\n// así que se guarda su último valor. Contador e Imagen cambian en cada pieza: cuando han\n// llegado los dos, se espera 300 ms (por si cota/resultado vienen en el mismo lote) y se inserta.\nconst t = msg.topic || \"\";\nconst s = context.get(\"s\") || { nuevoCnt: false, nuevaImg: false };\nif (t.endsWith(\"Cota_mm\")) s.cota = Number(msg.payload);\nelse if (t.endsWith(\"Resultado\")) s.resultado = Number(msg.payload);\nelse if (t.endsWith(\"Contador\")) { s.pieza = Number(msg.payload); s.nuevoCnt = true; }\nelse if (t.endsWith(\"Imagen\")) {\n    const v = msg.payload;\n    s.imagen = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    s.nuevaImg = true;\n}\nelse return null;\ncontext.set(\"s\", s);\n\nif (s.nuevoCnt && s.nuevaImg) {\n    clearTimeout(context.get(\"timer\"));\n    context.set(\"timer\", setTimeout(() => {\n        s.nuevoCnt = false;\n        s.nuevaImg = false;\n        node.send({\n            topic: \"calidad\",\n            payload: { pieza: s.pieza, cota_mm: s.cota, resultado: s.resultado },\n            params: [new Date(), s.pieza, s.cota, s.resultado, s.imagen]\n        });\n        node.status({ fill: s.resultado === 1 ? \"green\" : \"red\", shape: \"dot\", text: `pieza ${s.pieza}` });\n    }, 300));\n}\nreturn null;",
+        "func": "// Junta los 4 valores OPC UA de una pieza en un mensaje MQTT.\n// OPC UA solo notifica cambios: Cota_mm y Resultado pueden no llegar si repiten valor,\n// así que se guarda su último valor. Contador e Imagen cambian en cada pieza: cuando han\n// llegado los dos, se espera 300 ms (por si cota/resultado vienen en el mismo lote) y se publica.\nconst t = msg.topic || \"\";\nconst s = context.get(\"s\") || { nuevoCnt: false, nuevaImg: false };\nif (t.endsWith(\"Cota_mm\")) s.cota = Number(msg.payload);\nelse if (t.endsWith(\"Resultado\")) s.resultado = Number(msg.payload);\nelse if (t.endsWith(\"Contador\")) { s.pieza = Number(msg.payload); s.nuevoCnt = true; }\nelse if (t.endsWith(\"Imagen\")) {\n    const v = msg.payload;\n    s.imagen = Buffer.isBuffer(v) ? v : Buffer.from(v);\n    s.nuevaImg = true;\n}\nelse return null;\ncontext.set(\"s\", s);\n\nif (s.nuevoCnt && s.nuevaImg) {\n    clearTimeout(context.get(\"timer\"));\n    context.set(\"timer\", setTimeout(() => {\n        s.nuevoCnt = false;\n        s.nuevaImg = false;\n        node.send({\n            payload: {\n                time: new Date().toISOString(),\n                pieza: s.pieza,\n                cota_mm: s.cota,\n                resultado: s.resultado,\n                imagen: s.imagen.toString(\"base64\")\n            }\n        });\n        node.status({ fill: s.resultado === 1 ? \"green\" : \"red\", shape: \"dot\", text: `pieza ${s.pieza}` });\n    }, 300));\n}\nreturn null;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1081,6 +857,65 @@
         "y": 400,
         "wires": [
             [
+                "7304a8e3d6079194"
+            ]
+        ]
+    },
+    {
+        "id": "7304a8e3d6079194",
+        "type": "mqtt out",
+        "z": "8d23c2c5eab6ccba",
+        "name": "Publicar pieza",
+        "topic": "quality",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "0a42f122efecbf4e",
+        "x": 1000,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9b7387c7356d59cb",
+        "type": "mqtt in",
+        "z": "12ffe4bad46dc3f4",
+        "name": "Pieza",
+        "topic": "quality",
+        "qos": "1",
+        "datatype": "json",
+        "broker": "38eba8fb552d6592",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 120,
+        "wires": [
+            [
+                "75a9460fb3820bcf"
+            ]
+        ]
+    },
+    {
+        "id": "75a9460fb3820bcf",
+        "type": "function",
+        "z": "12ffe4bad46dc3f4",
+        "name": "Preparar fila",
+        "func": "// Mensaje MQTT de una pieza -> parámetros del INSERT en la tabla calidad.\nconst p = msg.payload;\nif (!p || typeof p !== \"object\" || p.pieza === undefined) {\n    node.warn(\"Mensaje de calidad no válido\");\n    return null;\n}\nmsg.params = [\n    p.time ? new Date(p.time) : new Date(),\n    p.pieza,\n    p.cota_mm,\n    p.resultado,\n    p.imagen ? Buffer.from(p.imagen, \"base64\") : null\n];\nnode.status({ fill: p.resultado === 1 ? \"green\" : \"red\", shape: \"dot\", text: `pieza ${p.pieza}` });\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 120,
+        "wires": [
+            [
                 "5d65e31415b6a839"
             ]
         ]
@@ -1088,15 +923,15 @@
     {
         "id": "5d65e31415b6a839",
         "type": "postgresql",
-        "z": "8d23c2c5eab6ccba",
+        "z": "12ffe4bad46dc3f4",
         "name": "Guardar en tabla calidad",
         "query": "INSERT INTO calidad (\"time\", pieza, cota_mm, resultado, imagen)\nVALUES ($1, $2, $3, $4, $5);",
         "postgreSQLConfig": "43d03b6d0d1dca03",
         "split": false,
         "rowsPerMsg": 1,
         "outputs": 1,
-        "x": 1010,
-        "y": 400,
+        "x": 560,
+        "y": 120,
         "wires": [
             []
         ]
